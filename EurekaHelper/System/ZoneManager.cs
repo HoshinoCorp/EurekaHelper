@@ -7,15 +7,17 @@ using System;
 
 namespace EurekaHelper.System
 {
+    // This isn't used :(
     public class ZoneManager
     {
         private delegate nint InitZoneDelegate(nint a1, int a2, nint a3);
+
         private readonly IDtrBarEntry _dtrBarEntry;
 
-        public ZoneManager() 
+        public ZoneManager()
         {
             DalamudApi.GameInteropProvider.InitializeFromAttributes(this);
-            InitZoneHook?.Enable();
+            //InitZoneHook?.Enable();
 
             var dtrBarTitle = "Eureka Helper";
             try
@@ -41,8 +43,8 @@ namespace EurekaHelper.System
             }
         }
 
-        [Signature("E8 ?? ?? ?? ?? 45 33 C0 48 8D ?? ?? 8B ?? E8 ?? ?? ?? ?? 48 8D ??", DetourName = nameof(InitZoneDetour))]
-        private readonly Hook<InitZoneDelegate> InitZoneHook = null!;
+        //[Signature("E8 ?? ?? ?? ?? 45 33 C0 48 8D ?? ?? 8B ?? E8 ?? ?? ?? ?? 48 8D ??", DetourName = nameof(InitZoneDetour))]
+        //private readonly Hook<InitZoneDelegate> InitZoneHook = null!;
 
         private nint InitZoneDetour(nint a1, int a2, nint a3)
         {
@@ -80,12 +82,13 @@ namespace EurekaHelper.System
                 DalamudApi.Log.Error($"Something went wrong. Please contact the author.\n{ex.Message}");
             }
 
-            return InitZoneHook.Original(a1, a2, a3);
+            //return InitZoneHook.Original(a1, a2, a3);
+            return 1;
         }
 
         public void Dispose()
         {
-            InitZoneHook?.Dispose();
+            //InitZoneHook?.Dispose();
             _dtrBarEntry?.Remove();
         }
     }

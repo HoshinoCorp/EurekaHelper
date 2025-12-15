@@ -146,7 +146,6 @@ namespace EurekaHelper.Windows
                     {
                         if (ImGuiComponents.IconButton(FontAwesomeIcon.LockOpen))
                         {
-
                             if (Plugin.CurrentDatacenterId == 0)
                                 EurekaHelper.PrintMessage(
                                     "This datacenter is not supported currently. Please submit an issue if you think this is incorrect.");
@@ -1141,6 +1140,10 @@ namespace EurekaHelper.Windows
         {
             var save = false;
 
+            ImGui.TextColored(RedColorText, "** DISCLAIMER, READ THIS **");
+            ImGui.TextWrapped(
+                "This feature is currently sunset. I do not have the time to investigate this feature again and in the interest of keeping the plugin operation, I will disable this for the foreseeable future. There are other plugins that implement this feature, please use those instead.");
+            ImGui.Separator();
             ImGui.Columns(2);
 
             save |= ImGui.Checkbox("Display Server Id in chat", ref EurekaHelper.Config.DisplayServerId);
@@ -1153,7 +1156,6 @@ namespace EurekaHelper.Windows
 
             ImGui.Separator();
 
-            ImGui.TextColored(RedColorText, "** DISCLAIMER, READ THIS **");
             ImGui.TextWrapped(
                 "This option will display the current server ID of the instance in chat each time you instance into a Eureka zone. " +
                 "This might help you identify unique instances. However, there are a few things you should note." +
