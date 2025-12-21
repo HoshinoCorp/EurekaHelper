@@ -246,8 +246,8 @@ public class EurekaHelper : IDalamudPlugin
 
     private void UpdateDatacenterId()
     {
-        if (DalamudApi.ClientState.LocalPlayer is null || !DalamudApi.ClientState.IsLoggedIn) return;
-        CurrentDatacenterId = Utils.DatacenterToEurekaDatacenterId(DalamudApi.ClientState.LocalPlayer.CurrentWorld.Value
+        if (DalamudApi.ObjectTable.LocalPlayer is null || !DalamudApi.ClientState.IsLoggedIn) return;
+        CurrentDatacenterId = Utils.DatacenterToEurekaDatacenterId(DalamudApi.ObjectTable.LocalPlayer.CurrentWorld.Value
             .DataCenter.Value.Name.ExtractText());
     }
 

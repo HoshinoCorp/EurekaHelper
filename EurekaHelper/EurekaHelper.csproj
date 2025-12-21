@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<Authors>Snowy, KangasZ</Authors>
-		<Version>2.0.3.2</Version>
+		<Version>2.0.3.3</Version>
 		<Description>A plugin to enchance your Eureka experience, updated for the most current patch</Description>
 		<PackageProjectUrl>https://github.com/KangasZ/EurekaHelper</PackageProjectUrl>
 	</PropertyGroup>
 	
     <PropertyGroup>
-        <TargetFramework>net9.0-windows</TargetFramework>
+        <TargetFramework>net10.0-windows</TargetFramework>
 		<Platforms>x64</Platforms>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -26,7 +26,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DalamudPackager" Version="13.0.0" />
+		<PackageReference Include="DalamudPackager" Version="14.0.1" />
 		<Reference Include="FFXIVClientStructs">
 			<HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
 			<Private>false</Private>
