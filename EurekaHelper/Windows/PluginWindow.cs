@@ -1,13 +1,13 @@
-﻿using Dalamud.Interface.Windowing;
-using System;
-using System.Numerics;
-using Dalamud.Interface;
-using System.Threading.Tasks;
+﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
+using System.Threading.Tasks;
 using Dalamud.Bindings.ImGui;
-using Dalamud.Interface.Components;
+using Dalamud.Interface;
 using Dalamud.Interface.Colors;
+using Dalamud.Interface.Components;
+using Dalamud.Interface.Windowing;
 using EurekaHelper.System;
 using EurekaHelper.XIV;
 
@@ -17,18 +17,20 @@ namespace EurekaHelper.Windows
     {
         private readonly EurekaHelper Plugin = null!;
 
-        public PluginWindow(EurekaHelper plugin) : base("Eureka Helper")
+        public PluginWindow(EurekaHelper plugin)
+            : base("Eureka Helper")
         {
             Plugin = plugin;
             SizeConstraints = new WindowSizeConstraints
-                { MinimumSize = new Vector2(566, 520), MaximumSize = new Vector2(float.MaxValue, float.MaxValue) };
+            {
+                MinimumSize = new Vector2(566, 520),
+                MaximumSize = new Vector2(float.MaxValue, float.MaxValue),
+            };
         }
 
         private static EurekaConnectionManager Connection = new();
 
-        public void Dispose()
-        {
-        }
+        public void Dispose() { }
 
         public override void Draw()
         {
@@ -89,25 +91,37 @@ namespace EurekaHelper.Windows
                 {
                     if (ImGui.Button("Create Anemos Tracker"))
                     {
-                        _ = Task.Run(async () => { await CreateTracker(1); });
+                        _ = Task.Run(async () =>
+                        {
+                            await CreateTracker(1);
+                        });
                         ImGui.CloseCurrentPopup();
                     }
 
                     if (ImGui.Button("Create Pagos Tracker"))
                     {
-                        _ = Task.Run(async () => { await CreateTracker(2); });
+                        _ = Task.Run(async () =>
+                        {
+                            await CreateTracker(2);
+                        });
                         ImGui.CloseCurrentPopup();
                     }
 
                     if (ImGui.Button("Create Pyros Tracker"))
                     {
-                        _ = Task.Run(async () => { await CreateTracker(3); });
+                        _ = Task.Run(async () =>
+                        {
+                            await CreateTracker(3);
+                        });
                         ImGui.CloseCurrentPopup();
                     }
 
                     if (ImGui.Button("Create Hydatos Tracker"))
                     {
-                        _ = Task.Run(async () => { await CreateTracker(4); });
+                        _ = Task.Run(async () =>
+                        {
+                            await CreateTracker(4);
+                        });
                         ImGui.CloseCurrentPopup();
                     }
 
@@ -117,12 +131,12 @@ namespace EurekaHelper.Windows
                 ImGui.PopStyleVar();
                 ImGui.PopStyleColor();
             }
-
             else if (Connection.IsConnected())
             {
                 if (ImGuiComponents.IconButton(FontAwesomeIcon.Link))
                     Utils.CopyToClipboard(
-                        $"{Utils.CombineUrl(Constants.EurekaTrackerLink, Connection.GetTrackerId())}");
+                        $"{Utils.CombineUrl(Constants.EurekaTrackerLink, Connection.GetTrackerId())}"
+                    );
                 Utils.SetTooltip("Copy tracker link to clipboard");
 
                 if (Connection.CanModify())
@@ -148,7 +162,8 @@ namespace EurekaHelper.Windows
                         {
                             if (Plugin.CurrentDatacenterId == 0)
                                 EurekaHelper.PrintMessage(
-                                    "This datacenter is not supported currently. Please submit an issue if you think this is incorrect.");
+                                    "This datacenter is not supported currently. Please submit an issue if you think this is incorrect."
+                                );
                             else
                                 await Connection.SetTrackerVisiblity(Plugin.CurrentDatacenterId);
                         }
@@ -161,11 +176,13 @@ namespace EurekaHelper.Windows
 
                 if (ImGuiComponents.IconButton(FontAwesomeIcon.Globe))
                 {
-                    Process.Start(new ProcessStartInfo
-                    {
-                        FileName = $"{Constants.EurekaTrackerLink}{Connection.GetTrackerId()}",
-                        UseShellExecute = true
-                    });
+                    Process.Start(
+                        new ProcessStartInfo
+                        {
+                            FileName = $"{Constants.EurekaTrackerLink}{Connection.GetTrackerId()}",
+                            UseShellExecute = true,
+                        }
+                    );
                 }
 
                 Utils.SetTooltip("Opens the tracker in a browser");
@@ -173,14 +190,20 @@ namespace EurekaHelper.Windows
                 ImGui.SameLine();
 
                 if (ImGuiComponents.IconButton(FontAwesomeIcon.FileExport))
-                    _ = Task.Run(async () => { await ExportTracker(Connection.GetTrackerId()); });
+                    _ = Task.Run(async () =>
+                    {
+                        await ExportTracker(Connection.GetTrackerId());
+                    });
                 Utils.SetTooltip("Exports the current tracker to a new one");
 
                 ImGui.SameLine();
 
                 if (ImGuiComponents.IconButton(FontAwesomeIcon.SignOutAlt))
                 {
-                    _ = Task.Run(async () => { await Connection.Close(); });
+                    _ = Task.Run(async () =>
+                    {
+                        await Connection.Close();
+                    });
                 }
 
                 Utils.SetTooltip("Leave the current tracker");
@@ -198,10 +221,16 @@ namespace EurekaHelper.Windows
                     float spacing = ImGui.GetStyle().ItemInnerSpacing.X;
                     ImGui.Text("E.T:");
                     ImGui.SameLine(0.0f, spacing);
-                    ImGui.TextColored(new Vector4(0.0f, 1.0f, 0.0f, 1.0f), $"{EorzeaTime.Now.EorzeaDateTime:HH:mm}");
+                    ImGui.TextColored(
+                        new Vector4(0.0f, 1.0f, 0.0f, 1.0f),
+                        $"{EorzeaTime.Now.EorzeaDateTime:HH:mm}"
+                    );
                     ImGui.SameLine(0.0f, spacing);
 
-                    if (EorzeaTime.Now.EorzeaDateTime.Hour < 6 || EorzeaTime.Now.EorzeaDateTime.Hour >= 19)
+                    if (
+                        EorzeaTime.Now.EorzeaDateTime.Hour < 6
+                        || EorzeaTime.Now.EorzeaDateTime.Hour >= 19
+                    )
                     {
                         ImGui.Text("(Night)");
                         ImGui.Text($"Day in {EorzeaTime.Now.TimeUntilDay():mm'm 'ss's'}");
@@ -216,9 +245,13 @@ namespace EurekaHelper.Windows
 
                     ImGui.Text("Weather:");
                     ImGui.SameLine(0.0f, spacing);
-                    ImGui.TextColored(new Vector4(0.0f, 1.0f, 0.0f, 1.0f),
-                        $"{Connection.GetTracker().GetCurrentWeatherInfo().Weather.ToFriendlyString()}");
-                    ImGui.Text($"Ends in {Connection.GetTracker().GetCurrentWeatherInfo().Timeleft:mm'm 'ss's'}");
+                    ImGui.TextColored(
+                        new Vector4(0.0f, 1.0f, 0.0f, 1.0f),
+                        $"{Connection.GetTracker().GetCurrentWeatherInfo().Weather.ToFriendlyString()}"
+                    );
+                    ImGui.Text(
+                        $"Ends in {Connection.GetTracker().GetCurrentWeatherInfo().Timeleft:mm'm 'ss's'}"
+                    );
 
                     ImGui.Dummy(new Vector2(0.0f, 10.0f));
 
@@ -228,7 +261,9 @@ namespace EurekaHelper.Windows
                     {
                         ImGui.TextColored(PurpleColorText, Weather.ToFriendlyString());
                         ImGui.SameLine(0.0f, ImGui.GetStyle().ItemInnerSpacing.X);
-                        ImGui.Text($"in: {(Time.ToString(Time.Hours > 0 ? "hh'h 'mm'm 'ss's'" : "mm'm 'ss's'"))}");
+                        ImGui.Text(
+                            $"in: {(Time.ToString(Time.Hours > 0 ? "hh'h 'mm'm 'ss's'" : "mm'm 'ss's'"))}"
+                        );
                     }
 
                     ImGui.EndTooltip();
@@ -263,15 +298,28 @@ namespace EurekaHelper.Windows
                     ImGui.PopStyleColor();
                 }
 
-                ImGui.SameLine(ImGui.GetContentRegionAvail().X - ImGui
-                    .CalcTextSize($"ID: {Connection.GetTrackerId()}\t\tViewers: {Connection.GetViewers()}").X);
+                ImGui.SameLine(
+                    ImGui.GetContentRegionAvail().X
+                        - ImGui
+                            .CalcTextSize(
+                                $"ID: {Connection.GetTrackerId()}\t\tViewers: {Connection.GetViewers()}"
+                            )
+                            .X
+                );
                 ImGui.AlignTextToFramePadding();
-                ImGui.Text($"ID: {Connection.GetTrackerId()}\t\tViewers: {Connection.GetViewers()}");
+                ImGui.Text(
+                    $"ID: {Connection.GetTrackerId()}\t\tViewers: {Connection.GetViewers()}"
+                );
             }
 
             ImGui.PushStyleVar(ImGuiStyleVar.CellPadding, new Vector2(5.0f, 5.0f));
-            if (ImGui.BeginTable("TrackerConnectionSettings", 3,
-                    ImGuiTableFlags.Borders | ImGuiTableFlags.NoBordersInBody))
+            if (
+                ImGui.BeginTable(
+                    "TrackerConnectionSettings",
+                    3,
+                    ImGuiTableFlags.Borders | ImGuiTableFlags.NoBordersInBody
+                )
+            )
             {
                 ImGui.TableSetupColumn("Code", ImGuiTableColumnFlags.WidthFixed);
                 ImGui.TableSetupColumn("Password", ImGuiTableColumnFlags.WidthFixed);
@@ -289,9 +337,15 @@ namespace EurekaHelper.Windows
                 ImGui.Text("Password:");
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(200f);
-                ImGui.InputTextWithHint("##TrackerPassword", "Enter tracker password", ref TrackerPassword, 100);
+                ImGui.InputTextWithHint(
+                    "##TrackerPassword",
+                    "Enter tracker password",
+                    ref TrackerPassword,
+                    100
+                );
                 Utils.SetTooltip(
-                    "Don't input if you just want to join a tracker.\nIf you have the password, enter the correct password or you'll need to press \"Set\" again.");
+                    "Don't input if you just want to join a tracker.\nIf you have the password, enter the correct password or you'll need to press \"Set\" again."
+                );
 
                 ImGui.TableNextColumn();
                 if (ImGui.Button("Set", new Vector2(ImGui.GetContentRegionAvail().X, 0.0f)))
@@ -302,8 +356,11 @@ namespace EurekaHelper.Windows
                         {
                             if (Connection.GetTrackerId() == TrackerCode)
                             {
-                                if (Connection.IsConnected() && !Connection.CanModify() &&
-                                    !string.IsNullOrWhiteSpace(TrackerPassword))
+                                if (
+                                    Connection.IsConnected()
+                                    && !Connection.CanModify()
+                                    && !string.IsNullOrWhiteSpace(TrackerPassword)
+                                )
                                     await Connection.SetPassword(TrackerPassword);
                             }
                             else
@@ -311,7 +368,10 @@ namespace EurekaHelper.Windows
                                 if (Connection.IsConnected())
                                     await Connection.Close();
 
-                                Connection = await EurekaConnectionManager.JoinTracker(TrackerCode, TrackerPassword);
+                                Connection = await EurekaConnectionManager.JoinTracker(
+                                    TrackerCode,
+                                    TrackerPassword
+                                );
                             }
                         });
                     }
@@ -330,11 +390,15 @@ namespace EurekaHelper.Windows
 
         public async Task CreateTracker(int zoneId, bool printMessage = false)
         {
-            (string trackerId, string password) = await EurekaConnectionManager.CreateTracker(zoneId);
+            (string trackerId, string password) = await EurekaConnectionManager.CreateTracker(
+                zoneId
+            );
 
             if (string.IsNullOrWhiteSpace(trackerId) && string.IsNullOrWhiteSpace(password))
             {
-                DalamudApi.Log.Error("TrackerId and Password not returned from API for some reason.");
+                DalamudApi.Log.Error(
+                    "TrackerId and Password not returned from API for some reason."
+                );
                 return;
             }
 
@@ -347,16 +411,21 @@ namespace EurekaHelper.Windows
 
             if (printMessage)
                 EurekaHelper.PrintMessage(
-                    $"Successfully created a tracker: {Utils.CombineUrl(Constants.EurekaTrackerLink, trackerId)}");
+                    $"Successfully created a tracker: {Utils.CombineUrl(Constants.EurekaTrackerLink, trackerId)}"
+                );
         }
 
         public async Task ExportTracker(string oldTrackerId, bool printMessage = false)
         {
-            (string trackerId, string password) = await EurekaConnectionManager.ExportTracker(oldTrackerId);
+            (string trackerId, string password) = await EurekaConnectionManager.ExportTracker(
+                oldTrackerId
+            );
 
             if (string.IsNullOrWhiteSpace(trackerId) && string.IsNullOrWhiteSpace(password))
             {
-                DalamudApi.Log.Error("TrackerId and Password not returned from API for some reason.");
+                DalamudApi.Log.Error(
+                    "TrackerId and Password not returned from API for some reason."
+                );
                 return;
             }
 
@@ -369,25 +438,39 @@ namespace EurekaHelper.Windows
 
             if (printMessage)
                 EurekaHelper.PrintMessage(
-                    $"Successfully exported the previous tracker: {Utils.CombineUrl(Constants.EurekaTrackerLink, trackerId)}");
+                    $"Successfully exported the previous tracker: {Utils.CombineUrl(Constants.EurekaTrackerLink, trackerId)}"
+                );
         }
 
         public void DrawTrackerTable()
         {
             ImGui.PushStyleColor(ImGuiCol.Border, ImGui.GetColorU32(ImGuiCol.TabActive));
             ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0.0f, 0.0f));
-            ImGui.BeginChild("EurekaTracker",
-                new Vector2(ImGui.GetContentRegionAvail().X, ImGui.GetContentRegionAvail().Y), true);
+            ImGui.BeginChild(
+                "EurekaTracker",
+                new Vector2(ImGui.GetContentRegionAvail().X, ImGui.GetContentRegionAvail().Y),
+                true
+            );
             ImGui.PopStyleColor();
             ImGui.PopStyleVar();
 
             if (Connection.IsConnected())
             {
                 var numColumns = 6;
-                if (ImGui.BeginTable("TrackerTable", numColumns,
-                        ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersInnerH | ImGuiTableFlags.BordersV |
-                        ImGuiTableFlags.NoBordersInBody | ImGuiTableFlags.ScrollY | ImGuiTableFlags.NoSavedSettings |
-                        ImGuiTableFlags.Sortable | ImGuiTableFlags.SortTristate))
+                if (
+                    ImGui.BeginTable(
+                        "TrackerTable",
+                        numColumns,
+                        ImGuiTableFlags.Resizable
+                            | ImGuiTableFlags.BordersInnerH
+                            | ImGuiTableFlags.BordersV
+                            | ImGuiTableFlags.NoBordersInBody
+                            | ImGuiTableFlags.ScrollY
+                            | ImGuiTableFlags.NoSavedSettings
+                            | ImGuiTableFlags.Sortable
+                            | ImGuiTableFlags.SortTristate
+                    )
+                )
                 {
                     var levelTableColumnFlags = ImGuiTableColumnFlags.WidthFixed;
                     if (!EurekaHelper.Config.ShowLevelInTrackerTable)
@@ -398,8 +481,10 @@ namespace EurekaHelper.Windows
                     ImGui.TableSetupColumn("Spawned By", ImGuiTableColumnFlags.WidthFixed);
                     ImGui.TableSetupColumn("Popped At");
                     ImGui.TableSetupColumn("Respawn In");
-                    ImGui.TableSetupColumn("Reset All",
-                        ImGuiTableColumnFlags.WidthStretch | ImGuiTableColumnFlags.NoSort);
+                    ImGui.TableSetupColumn(
+                        "Reset All",
+                        ImGuiTableColumnFlags.WidthStretch | ImGuiTableColumnFlags.NoSort
+                    );
                     ImGui.TableSetupScrollFreeze(0, 1);
 
                     ImGui.TableNextRow(ImGuiTableRowFlags.Headers);
@@ -416,15 +501,26 @@ namespace EurekaHelper.Windows
                         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(0.0f, 0.0f));
                         if (Connection.CanModify())
                         {
-                            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.89f, 0.5f, 0.5f, 1.0f));
-                            if (ImGui.Button("Reset All", new Vector2(ImGui.GetContentRegionAvail().X, 0.0f)))
+                            ImGui.PushStyleColor(
+                                ImGuiCol.Button,
+                                new Vector4(0.89f, 0.5f, 0.5f, 1.0f)
+                            );
+                            if (
+                                ImGui.Button(
+                                    "Reset All",
+                                    new Vector2(ImGui.GetContentRegionAvail().X, 0.0f)
+                                )
+                            )
                                 ImGui.OpenPopup("Confirm");
                             ImGui.PopStyleColor();
                         }
                         else
                         {
                             ImGui.BeginDisabled();
-                            ImGui.Button("Reset All", new Vector2(ImGui.GetContentRegionAvail().X, 0.0f));
+                            ImGui.Button(
+                                "Reset All",
+                                new Vector2(ImGui.GetContentRegionAvail().X, 0.0f)
+                            );
                             ImGui.EndDisabled();
                         }
 
@@ -437,7 +533,10 @@ namespace EurekaHelper.Windows
                     {
                         if (ImGui.SmallButton("Confirm?"))
                         {
-                            _ = Task.Run(async () => { await Connection.ResetAll(); });
+                            _ = Task.Run(async () =>
+                            {
+                                await Connection.ResetAll();
+                            });
                             ImGui.CloseCurrentPopup();
                         }
 
@@ -477,7 +576,11 @@ namespace EurekaHelper.Windows
 
         private void DrawTracker()
         {
-            var zoneFates = Connection.GetTracker()?.GetFates().Where(x => x.IncludeInTracker).ToList();
+            var zoneFates = Connection
+                .GetTracker()
+                ?.GetFates()
+                .Where(x => x.IncludeInTracker)
+                .ToList();
             if (zoneFates is null)
                 return;
 
@@ -511,12 +614,18 @@ namespace EurekaHelper.Windows
                             zoneFates = zoneFates.OrderByDescending(x => x.SpawnedBy).ToList();
                             break;
                         case (3, ImGuiSortDirection.Ascending):
-                            zoneFates = zoneFates.OrderBy(x => x.IsPopped()).ThenBy(x => x.GetRespawnTimeleft())
-                                .ThenBy(x => x.FateLevel).ToList();
+                            zoneFates = zoneFates
+                                .OrderBy(x => x.IsPopped())
+                                .ThenBy(x => x.GetRespawnTimeleft())
+                                .ThenBy(x => x.FateLevel)
+                                .ToList();
                             break;
                         case (3, ImGuiSortDirection.Descending):
-                            zoneFates = zoneFates.OrderBy(x => !x.IsPopped())
-                                .ThenByDescending(x => x.GetRespawnTimeleft()).ThenBy(x => x.FateLevel).ToList();
+                            zoneFates = zoneFates
+                                .OrderBy(x => !x.IsPopped())
+                                .ThenByDescending(x => x.GetRespawnTimeleft())
+                                .ThenBy(x => x.FateLevel)
+                                .ToList();
                             break;
                         case (4, ImGuiSortDirection.Ascending):
                             zoneFates = zoneFates
@@ -524,7 +633,9 @@ namespace EurekaHelper.Windows
                                     x.GetRespawnRequirements(Connection.GetTracker())
                                         .OrderBy(y => !y.Action.Equals("Respawn"))
                                         .ThenByDescending(y => y.Time)
-                                        .FirstOrDefault().Time)
+                                        .FirstOrDefault()
+                                        .Time
+                                )
                                 .ToList();
                             break;
                         case (4, ImGuiSortDirection.Descending):
@@ -533,7 +644,9 @@ namespace EurekaHelper.Windows
                                     x.GetRespawnRequirements(Connection.GetTracker())
                                         .OrderBy(y => !y.Action.Equals("Respawn"))
                                         .ThenByDescending(y => y.Time)
-                                        .FirstOrDefault().Time)
+                                        .FirstOrDefault()
+                                        .Time
+                                )
                                 .ToList();
                             break;
                     }
@@ -561,12 +674,18 @@ namespace EurekaHelper.Windows
                     ImGui.Text($"FATE Level: {fate.FateLevel}");
                     ImGui.Text($"Element:");
                     ImGui.SameLine(0.0f, spacing);
-                    ImGui.TextColored(new Vector4(0.68f, 0.88f, 0.12f, 1.0f), fate.BossElement.ToFriendlyString());
+                    ImGui.TextColored(
+                        new Vector4(0.68f, 0.88f, 0.12f, 1.0f),
+                        fate.BossElement.ToFriendlyString()
+                    );
                     if (fate.SpawnRequiredWeather != EurekaWeather.None)
                     {
                         ImGui.Text("Weather Required:");
                         ImGui.SameLine(0.0f, spacing);
-                        ImGui.TextColored(PurpleColorText, fate.SpawnRequiredWeather.ToFriendlyString());
+                        ImGui.TextColored(
+                            PurpleColorText,
+                            fate.SpawnRequiredWeather.ToFriendlyString()
+                        );
                     }
 
                     ImGui.EndTooltip();
@@ -589,7 +708,10 @@ namespace EurekaHelper.Windows
                     ImGui.BeginTooltip();
                     ImGui.Text($"Element:");
                     ImGui.SameLine(0.0f, spacing);
-                    ImGui.TextColored(new Vector4(0.68f, 0.88f, 0.12f, 1.0f), fate.SpawnByElement.ToFriendlyString());
+                    ImGui.TextColored(
+                        new Vector4(0.68f, 0.88f, 0.12f, 1.0f),
+                        fate.SpawnByElement.ToFriendlyString()
+                    );
 
                     if (fate.SpawnByRequiredNight)
                         ImGui.Text("Night Required");
@@ -598,7 +720,10 @@ namespace EurekaHelper.Windows
                     {
                         ImGui.Text("Weather Required:");
                         ImGui.SameLine(0.0f, spacing);
-                        ImGui.TextColored(PurpleColorText, fate.SpawnByRequiredWeather.ToFriendlyString());
+                        ImGui.TextColored(
+                            PurpleColorText,
+                            fate.SpawnByRequiredWeather.ToFriendlyString()
+                        );
                     }
 
                     ImGui.EndTooltip();
@@ -608,14 +733,22 @@ namespace EurekaHelper.Windows
                 }
 
                 if (ImGui.IsItemClicked())
-                    Utils.SetFlagMarker(fate.TerritoryId, fate.MapId,
-                        new Vector2(fate.SpawnByPosition.X, fate.SpawnByPosition.Y), openMap: true, drawCircle: true);
+                    Utils.SetFlagMarker(
+                        fate.TerritoryId,
+                        fate.MapId,
+                        new Vector2(fate.SpawnByPosition.X, fate.SpawnByPosition.Y),
+                        openMap: true,
+                        drawCircle: true
+                    );
 
                 // Popped At
                 ImGui.TableNextColumn();
                 if (fate.IsPopped())
                 {
-                    Utils.RightAlignTextInColumn(fate.GetPoppedTime().ToString("HH:mm"), RedColorText);
+                    Utils.RightAlignTextInColumn(
+                        fate.GetPoppedTime().ToString("HH:mm"),
+                        RedColorText
+                    );
                     if (Connection.CanModify())
                     {
                         if (ImGui.IsItemClicked())
@@ -651,14 +784,24 @@ namespace EurekaHelper.Windows
 
                             var width = ImGui.CalcTextSize("TIME").X;
                             ImGui.SetNextItemWidth(width);
-                            ImGui.InputText($"hr##{fate.TrackerId}", ref TimeAgoHours, 1,
-                                ImGuiInputTextFlags.CharsDecimal | ImGuiInputTextFlags.CallbackCharFilter,
-                                IntegerCheck);
+                            ImGui.InputText(
+                                $"hr##{fate.TrackerId}",
+                                ref TimeAgoHours,
+                                1,
+                                ImGuiInputTextFlags.CharsDecimal
+                                    | ImGuiInputTextFlags.CallbackCharFilter,
+                                IntegerCheck
+                            );
                             ImGui.SameLine();
                             ImGui.SetNextItemWidth(width);
-                            ImGui.InputText($"min##{fate.TrackerId}", ref TimeAgoMinutes, 2,
-                                ImGuiInputTextFlags.CharsDecimal | ImGuiInputTextFlags.CallbackCharFilter,
-                                IntegerCheck);
+                            ImGui.InputText(
+                                $"min##{fate.TrackerId}",
+                                ref TimeAgoMinutes,
+                                2,
+                                ImGuiInputTextFlags.CharsDecimal
+                                    | ImGuiInputTextFlags.CallbackCharFilter,
+                                IntegerCheck
+                            );
                         }
 
                         if (string.IsNullOrWhiteSpace(TimeAgoHours))
@@ -666,16 +809,28 @@ namespace EurekaHelper.Windows
                         if (string.IsNullOrWhiteSpace(TimeAgoMinutes))
                             TimeAgoMinutes = "0";
 
-                        var ts = new TimeSpan(int.Parse(TimeAgoHours), int.Parse(TimeAgoMinutes), 0);
+                        var ts = new TimeSpan(
+                            int.Parse(TimeAgoHours),
+                            int.Parse(TimeAgoMinutes),
+                            0
+                        );
                         ImGui.Text(
-                            $"{ts.Hours} {(ts.Hours > 1 ? "hours" : "hour")} {ts.Minutes} {(ts.Minutes > 1 ? "minutes" : "minute")} ago");
-                        if (ImGui.Button($"Set##{fate.TrackerId}", new Vector2(ImGui.GetContentRegionAvail().X, 0)))
+                            $"{ts.Hours} {(ts.Hours > 1 ? "hours" : "hour")} {ts.Minutes} {(ts.Minutes > 1 ? "minutes" : "minute")} ago"
+                        );
+                        if (
+                            ImGui.Button(
+                                $"Set##{fate.TrackerId}",
+                                new Vector2(ImGui.GetContentRegionAvail().X, 0)
+                            )
+                        )
                         {
                             var editedPopTime = DateTime.Now - ts;
                             _ = Task.Run(async () =>
                             {
-                                await Connection.SetPopTime((ushort)fate.TrackerId,
-                                    new DateTimeOffset(editedPopTime).ToUnixTimeMilliseconds());
+                                await Connection.SetPopTime(
+                                    (ushort)fate.TrackerId,
+                                    new DateTimeOffset(editedPopTime).ToUnixTimeMilliseconds()
+                                );
                             });
                             ImGui.CloseCurrentPopup();
                         }
@@ -689,12 +844,20 @@ namespace EurekaHelper.Windows
 
                 // Respawn In:
                 ImGui.TableNextColumn();
-                var respawnRequirementsUnformatted = fate.GetRespawnRequirements(Connection.GetTracker());
+                var respawnRequirementsUnformatted = fate.GetRespawnRequirements(
+                    Connection.GetTracker()
+                );
 
-                var respawnRequirements = respawnRequirementsUnformatted.Select(requirement =>
-                    (requirement.Action,
-                        Time: requirement.Time.ToString(
-                            requirement.Time.Hours > 0 ? "hh'h 'mm'm 'ss's'" : "mm'm 'ss's'"))).ToArray();
+                var respawnRequirements = respawnRequirementsUnformatted
+                    .Select(requirement =>
+                        (
+                            requirement.Action,
+                            Time: requirement.Time.ToString(
+                                requirement.Time.Hours > 0 ? "hh'h 'mm'm 'ss's'" : "mm'm 'ss's'"
+                            )
+                        )
+                    )
+                    .ToArray();
 
                 if (respawnRequirements.Length == 0)
                 {
@@ -705,7 +868,10 @@ namespace EurekaHelper.Windows
                     Vector4 colorText;
                     if (respawnRequirements[0].Action.Equals("Respawn"))
                     {
-                        if (respawnRequirements[0].Action.Equals("Respawn") && respawnRequirements.Length > 1)
+                        if (
+                            respawnRequirements[0].Action.Equals("Respawn")
+                            && respawnRequirements.Length > 1
+                        )
                         {
                             colorText = PurpleColorText;
                         }
@@ -723,7 +889,10 @@ namespace EurekaHelper.Windows
                     if (ImGui.IsItemHovered())
                     {
                         ImGui.PushStyleVar(ImGuiStyleVar.PopupBorderSize, 1f);
-                        ImGui.PushStyleColor(ImGuiCol.Border, ImGui.GetColorU32(ImGuiCol.TabActive));
+                        ImGui.PushStyleColor(
+                            ImGuiCol.Border,
+                            ImGui.GetColorU32(ImGuiCol.TabActive)
+                        );
 
                         ImGui.BeginTooltip();
                         foreach (var (action, time) in respawnRequirements)
@@ -766,9 +935,17 @@ namespace EurekaHelper.Windows
                     if (Connection.CanModify())
                     {
                         ImGui.PushStyleColor(ImGuiCol.Button, RedColor);
-                        if (ImGui.Button($"RESET##{fate.TrackerId}", new Vector2(ImGui.GetColumnWidth(), 0.0f)))
+                        if (
+                            ImGui.Button(
+                                $"RESET##{fate.TrackerId}",
+                                new Vector2(ImGui.GetColumnWidth(), 0.0f)
+                            )
+                        )
                         {
-                            _ = Task.Run(async () => { await Connection.Reset((ushort)fate.TrackerId); });
+                            _ = Task.Run(async () =>
+                            {
+                                await Connection.Reset((ushort)fate.TrackerId);
+                            });
                         }
 
                         ImGui.PopStyleColor();
@@ -785,12 +962,19 @@ namespace EurekaHelper.Windows
                     if (Connection.CanModify())
                     {
                         ImGui.PushStyleColor(ImGuiCol.Button, BlueColor);
-                        if (ImGui.Button($"POP##{fate.TrackerId}", new Vector2(ImGui.GetColumnWidth(), 0.0f)))
+                        if (
+                            ImGui.Button(
+                                $"POP##{fate.TrackerId}",
+                                new Vector2(ImGui.GetColumnWidth(), 0.0f)
+                            )
+                        )
                         {
                             _ = Task.Run(async () =>
                             {
-                                await Connection.SetPopTime((ushort)fate.TrackerId,
-                                    DateTimeOffset.Now.ToUnixTimeMilliseconds());
+                                await Connection.SetPopTime(
+                                    (ushort)fate.TrackerId,
+                                    DateTimeOffset.Now.ToUnixTimeMilliseconds()
+                                );
                             });
                         }
 
@@ -809,6 +993,7 @@ namespace EurekaHelper.Windows
         }
 
         public static uint DefaultIcon = 60474;
+
         public static void ResetDefaultIcon() => DefaultIcon = 60474;
 
         public void DrawElementalTab()
@@ -821,18 +1006,27 @@ namespace EurekaHelper.Windows
             Utils.SetTooltip("Displays in chat whenever an Elemental appears near the player");
             ImGui.NextColumn();
 
-            save |= ImGui.Checkbox("Display Elemental Toast", ref EurekaHelper.Config.DisplayElementalToast);
+            save |= ImGui.Checkbox(
+                "Display Elemental Toast",
+                ref EurekaHelper.Config.DisplayElementalToast
+            );
             Utils.SetTooltip("Displays a toast whenever an Elemental appears near the player");
             ImGui.NextColumn();
 
-            save |= ImGui.Checkbox("Crowdsource Locations", ref EurekaHelper.Config.ElementalCrowdsource);
+            save |= ImGui.Checkbox(
+                "Crowdsource Locations",
+                ref EurekaHelper.Config.ElementalCrowdsource
+            );
             Utils.SetTooltip("Assist to crowdsource for Elemental locations");
             ImGui.NextColumn();
 
             ImGui.SetNextItemWidth(140f);
             var enumNames = Enum.GetNames<PayloadOptions>();
             var enumValues = Enum.GetValues<PayloadOptions>();
-            var enumCurrent = Array.IndexOf(enumValues, EurekaHelper.Config.ElementalPayloadOptions);
+            var enumCurrent = Array.IndexOf(
+                enumValues,
+                EurekaHelper.Config.ElementalPayloadOptions
+            );
             if (ImGui.Combo("Payload Options", ref enumCurrent, enumNames, enumNames.Length))
             {
                 EurekaHelper.Config.ElementalPayloadOptions = enumValues[enumCurrent];
@@ -840,16 +1034,25 @@ namespace EurekaHelper.Windows
             }
 
             Utils.SetTooltip(
-                "Sets what the clickable payload does.\nThis also affects the Shout/Copy column in the table.\n" +
-                "For example: Setting it to \'ShoutToChat\' will send the Elemental to current chat when you click the button.");
+                "Sets what the clickable payload does.\nThis also affects the Shout/Copy column in the table.\n"
+                    + "For example: Setting it to \'ShoutToChat\' will send the Elemental to current chat when you click the button."
+            );
             ImGui.NextColumn();
 
-            save |= ImGui.Checkbox("Auto Mark Elementals", ref EurekaHelper.Config.ElementalAutoMark);
-            Utils.SetTooltip("Auto mark Elementals (only new Elementals) on map as you find them.\n" +
-                             "Due to some limitations, the map will always open when you find an Elemental with this configuration enabled.");
+            save |= ImGui.Checkbox(
+                "Auto Mark Elementals",
+                ref EurekaHelper.Config.ElementalAutoMark
+            );
+            Utils.SetTooltip(
+                "Auto mark Elementals (only new Elementals) on map as you find them.\n"
+                    + "Due to some limitations, the map will always open when you find an Elemental with this configuration enabled."
+            );
             ImGui.NextColumn();
 
-            save |= ImGui.Checkbox("Always Clear Elementals", ref EurekaHelper.Config.ElementalAlwaysClear);
+            save |= ImGui.Checkbox(
+                "Always Clear Elementals",
+                ref EurekaHelper.Config.ElementalAlwaysClear
+            );
             Utils.SetTooltip("Always clear the Elemental list whenever you join a Eureka zone");
             ImGui.NextColumn();
 
@@ -879,8 +1082,10 @@ namespace EurekaHelper.Windows
                 }
             }
 
-            Utils.SetTooltip("Adds a marker to known Elemental positions on the current map and minimap.\n" +
-                             "Help contribute to the known locations by providing the developer the necessary information");
+            Utils.SetTooltip(
+                "Adds a marker to known Elemental positions on the current map and minimap.\n"
+                    + "Help contribute to the known locations by providing the developer the necessary information"
+            );
             ImGui.SameLine();
 
             if (ImGui.Button("Clear All Elementals"))
@@ -899,14 +1104,26 @@ namespace EurekaHelper.Windows
 
             ImGui.PushStyleColor(ImGuiCol.Border, ImGui.GetColorU32(ImGuiCol.TabActive));
             ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0.0f, 0.0f));
-            ImGui.BeginChild("ElementalsChild",
-                new Vector2(ImGui.GetContentRegionAvail().X, ImGui.GetContentRegionAvail().Y), true);
+            ImGui.BeginChild(
+                "ElementalsChild",
+                new Vector2(ImGui.GetContentRegionAvail().X, ImGui.GetContentRegionAvail().Y),
+                true
+            );
             ImGui.PopStyleColor();
             ImGui.PopStyleVar();
 
-            if (ImGui.BeginTable("ElementalsTable", 6,
-                    ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersInnerH | ImGuiTableFlags.BordersV |
-                    ImGuiTableFlags.NoBordersInBody | ImGuiTableFlags.ScrollY | ImGuiTableFlags.NoSavedSettings))
+            if (
+                ImGui.BeginTable(
+                    "ElementalsTable",
+                    6,
+                    ImGuiTableFlags.Resizable
+                        | ImGuiTableFlags.BordersInnerH
+                        | ImGuiTableFlags.BordersV
+                        | ImGuiTableFlags.NoBordersInBody
+                        | ImGuiTableFlags.ScrollY
+                        | ImGuiTableFlags.NoSavedSettings
+                )
+            )
             {
                 ImGui.TableSetupColumn("Elemental");
                 ImGui.TableSetupColumn("Location");
@@ -926,17 +1143,29 @@ namespace EurekaHelper.Windows
                     ImGui.TableNextColumn();
                     ImGui.Text($"X: {elemental.Position.X:0.0}, Y: {elemental.Position.Y:0.0}");
                     if (ImGui.IsItemClicked())
-                        Utils.SetFlagMarker(elemental.TerritoryId, elemental.MapId, elemental.Position, openMap: true);
+                        Utils.SetFlagMarker(
+                            elemental.TerritoryId,
+                            elemental.MapId,
+                            elemental.Position,
+                            openMap: true
+                        );
 
                     ImGui.TableNextColumn();
                     var dateTime = EorzeaTime.Zero.AddSeconds(elemental.LastSeen).ToLocalTime();
                     ImGui.Text(dateTime.ToString());
 
                     ImGui.TableNextColumn();
-                    if (ImGui.Button(
-                            $"{(EurekaHelper.Config.ElementalPayloadOptions == PayloadOptions.CopyToClipboard ? $"C##{elemental.ObjectId}" : $"S##{elemental.ObjectId}")}"))
+                    if (
+                        ImGui.Button(
+                            $"{(EurekaHelper.Config.ElementalPayloadOptions == PayloadOptions.CopyToClipboard ? $"C##{elemental.ObjectId}" : $"S##{elemental.ObjectId}")}"
+                        )
+                    )
                     {
-                        Utils.SetFlagMarker(elemental.TerritoryId, elemental.MapId, elemental.Position);
+                        Utils.SetFlagMarker(
+                            elemental.TerritoryId,
+                            elemental.MapId,
+                            elemental.Position
+                        );
                         switch (EurekaHelper.Config.ElementalPayloadOptions)
                         {
                             case PayloadOptions.CopyToClipboard:
@@ -951,9 +1180,19 @@ namespace EurekaHelper.Windows
                     }
 
                     ImGui.TableNextColumn();
-                    if (ImGuiComponents.IconButton($"Elemental{elemental.ObjectId}", FontAwesomeIcon.MapMarked))
+                    if (
+                        ImGuiComponents.IconButton(
+                            $"Elemental{elemental.ObjectId}",
+                            FontAwesomeIcon.MapMarked
+                        )
+                    )
                     {
-                        Utils.AddMapMarker(elemental.TerritoryId, elemental.RawPosition, DefaultIcon, true);
+                        Utils.AddMapMarker(
+                            elemental.TerritoryId,
+                            elemental.RawPosition,
+                            DefaultIcon,
+                            true
+                        );
                         DefaultIcon++;
 
                         if (DefaultIcon > 60476)
@@ -961,7 +1200,12 @@ namespace EurekaHelper.Windows
                     }
 
                     ImGui.TableNextColumn();
-                    if (ImGuiComponents.IconButton($"Elemental{elemental.ObjectId}", FontAwesomeIcon.Trash))
+                    if (
+                        ImGuiComponents.IconButton(
+                            $"Elemental{elemental.ObjectId}",
+                            FontAwesomeIcon.Trash
+                        )
+                    )
                         Plugin.ElementalManager.Elementals.RemoveAt(i);
                 }
 
@@ -988,7 +1232,10 @@ namespace EurekaHelper.Windows
             Utils.SetTooltip("A sound que will be played whenever an NM pops.");
             ImGui.NextColumn();
 
-            save |= ImGui.Checkbox("Display fate progress", ref EurekaHelper.Config.DisplayFateProgress);
+            save |= ImGui.Checkbox(
+                "Display fate progress",
+                ref EurekaHelper.Config.DisplayFateProgress
+            );
             Utils.SetTooltip("Prints the NM progress in chat");
             ImGui.NextColumn();
 
@@ -1001,15 +1248,22 @@ namespace EurekaHelper.Windows
             ImGui.NextColumn();
 
             save |= ImGui.Checkbox("Auto pop fate", ref EurekaHelper.Config.AutoPopFate);
-            Utils.SetTooltip("Attempts to auto pop fate when connected to a tracker (if you have the password)");
+            Utils.SetTooltip(
+                "Attempts to auto pop fate when connected to a tracker (if you have the password)"
+            );
             ImGui.NextColumn();
 
             ImGui.SetNextItemWidth(140f);
             if (useChatSoundEffect)
             {
                 var soundEffect = EurekaHelper.Config.NMChatSoundEffect;
-                if (Utils.EnumSelector("NM Sound Effect", "Chat Sound Effect to be played when an NM pops.",
-                        ref soundEffect))
+                if (
+                    Utils.EnumSelector(
+                        "NM Sound Effect",
+                        "Chat Sound Effect to be played when an NM pops.",
+                        ref soundEffect
+                    )
+                )
                 {
                     save = true;
                     EurekaHelper.Config.NMChatSoundEffect = soundEffect;
@@ -1019,8 +1273,13 @@ namespace EurekaHelper.Windows
             else
             {
                 var nmSoundEffect = EurekaHelper.Config.NMSoundEffect;
-                if (Utils.EnumSelector("NM Sound Effect", "Sound Effect to be played when an NM pops.",
-                        ref nmSoundEffect))
+                if (
+                    Utils.EnumSelector(
+                        "NM Sound Effect",
+                        "Sound Effect to be played when an NM pops.",
+                        ref nmSoundEffect
+                    )
+                )
                 {
                     save = true;
                     EurekaHelper.Config.NMSoundEffect = nmSoundEffect;
@@ -1034,8 +1293,13 @@ namespace EurekaHelper.Windows
             if (useChatSoundEffect)
             {
                 var soundEffect = EurekaHelper.Config.BunnyChatSoundEffect;
-                if (Utils.EnumSelector("Bunny Sound Effect", "Sound Effect to be played when bunny spawns.",
-                        ref soundEffect))
+                if (
+                    Utils.EnumSelector(
+                        "Bunny Sound Effect",
+                        "Sound Effect to be played when bunny spawns.",
+                        ref soundEffect
+                    )
+                )
                 {
                     save = true;
                     EurekaHelper.Config.BunnyChatSoundEffect = soundEffect;
@@ -1045,8 +1309,13 @@ namespace EurekaHelper.Windows
             else
             {
                 var soundEffect = EurekaHelper.Config.BunnySoundEffect;
-                if (Utils.EnumSelector("Bunny Sound Effect", "Sound Effect to be played when bunny spawns.",
-                        ref soundEffect))
+                if (
+                    Utils.EnumSelector(
+                        "Bunny Sound Effect",
+                        "Sound Effect to be played when bunny spawns.",
+                        ref soundEffect
+                    )
+                )
                 {
                     save = true;
                     EurekaHelper.Config.BunnySoundEffect = soundEffect;
@@ -1058,9 +1327,14 @@ namespace EurekaHelper.Windows
 
             ImGui.SetNextItemWidth(140f);
             var payloadOption = EurekaHelper.Config.PayloadOptions;
-            if (Utils.EnumSelector("Payload Options", "Sets what the clickable payload does.\n" +
-                                                      "For example: Setting it to \'ShoutToChat\' will shout the pop when you click the button in chat.",
-                    ref payloadOption))
+            if (
+                Utils.EnumSelector(
+                    "Payload Options",
+                    "Sets what the clickable payload does.\n"
+                        + "For example: Setting it to \'ShoutToChat\' will shout the pop when you click the button in chat.",
+                    ref payloadOption
+                )
+            )
             {
                 save = true;
                 EurekaHelper.Config.PayloadOptions = payloadOption;
@@ -1070,9 +1344,13 @@ namespace EurekaHelper.Windows
 
             ImGui.SetNextItemWidth(140f);
             var xivChatType = EurekaHelper.Config.ChatChannel;
-            if (Utils.EnumSelector("Chat Channels",
+            if (
+                Utils.EnumSelector(
+                    "Chat Channels",
                     "Set the channel which the plugin messages will display. Default: Echo",
-                    ref xivChatType))
+                    ref xivChatType
+                )
+            )
             {
                 save = true;
                 EurekaHelper.Config.ChatChannel = xivChatType;
@@ -1080,47 +1358,76 @@ namespace EurekaHelper.Windows
 
             ImGui.NextColumn();
 
-            save |= ImGui.Checkbox("Randomize Map Coords", ref EurekaHelper.Config.RandomizeMapCoords);
+            save |= ImGui.Checkbox(
+                "Randomize Map Coords",
+                ref EurekaHelper.Config.RandomizeMapCoords
+            );
             Utils.SetTooltip("Randomizes map coords to range of +- 0.5 (recommended to enable)");
             ImGui.NextColumn();
 
-            save |= ImGui.Checkbox("Auto Create Tracker", ref EurekaHelper.Config.AutoCreateTracker);
-            Utils.SetTooltip("Auto creates tracker when joining an instance and prints the tracker link to chat");
+            save |= ImGui.Checkbox(
+                "Auto Create Tracker",
+                ref EurekaHelper.Config.AutoCreateTracker
+            );
+            Utils.SetTooltip(
+                "Auto creates tracker when joining an instance and prints the tracker link to chat"
+            );
             ImGui.NextColumn();
 
-            save |= ImGui.Checkbox("Auto Pop fate within range", ref EurekaHelper.Config.AutoPopFateWithinRange);
-            Utils.SetTooltip("Requires \"Auto pop fate\" to be enabled.\n\n" +
-                             "NM fates has an estimated respawn time of 2 hours\n" +
-                             "This option will pop fates if it has a cooldown of less than 5 minutes instead of waiting for the normal 2 hour duration");
+            save |= ImGui.Checkbox(
+                "Auto Pop fate within range",
+                ref EurekaHelper.Config.AutoPopFateWithinRange
+            );
+            Utils.SetTooltip(
+                "Requires \"Auto pop fate\" to be enabled.\n\n"
+                    + "NM fates has an estimated respawn time of 2 hours\n"
+                    + "This option will pop fates if it has a cooldown of less than 5 minutes instead of waiting for the normal 2 hour duration"
+            );
             ImGui.NextColumn();
 
-            save |= ImGui.Checkbox("Show Level On Tracker", ref EurekaHelper.Config.ShowLevelInTrackerTable);
+            save |= ImGui.Checkbox(
+                "Show Level On Tracker",
+                ref EurekaHelper.Config.ShowLevelInTrackerTable
+            );
             Utils.SetTooltip("Will show the level of a given NM in the tracker table.");
             ImGui.NextColumn();
 
-            save |= ImGui.Checkbox("Use Chat Sound Effects", ref EurekaHelper.Config.GlobalUseChatSoundEffect);
+            save |= ImGui.Checkbox(
+                "Use Chat Sound Effects",
+                ref EurekaHelper.Config.GlobalUseChatSoundEffect
+            );
             Utils.SetTooltip(
-                "This option can be enabled to use the chat sound effects instead of the other sound effects.\nThis option is active for ALL sound effects and will not overwrite your previous selections, however you will need to reset the sound effects.");
+                "This option can be enabled to use the chat sound effects instead of the other sound effects.\nThis option is active for ALL sound effects and will not overwrite your previous selections, however you will need to reset the sound effects."
+            );
             ImGui.NextColumn();
 
             ImGui.Columns(1);
             if (ImGui.CollapsingHeader("Custom Messages"))
             {
-                ImGui.TextWrapped("** HOW TO USE **" +
-                                  "\nType the messages you want in each line, to enter the next line press \"Enter\"\n");
+                ImGui.TextWrapped(
+                    "** HOW TO USE **"
+                        + "\nType the messages you want in each line, to enter the next line press \"Enter\"\n"
+                );
                 ImGui.TextWrapped("** AVAILABLE FORMATTINGS **");
                 ImGui.BulletText("%%bossName%% - Replaced with fate boss name");
                 ImGui.BulletText("%%bossShortName%% - Replaced with fate boss short name");
                 ImGui.BulletText("%%fateName%% - Replaced with fate name");
                 ImGui.BulletText("%%flag%% - Replaced with <flag>");
                 ImGui.Spacing();
-                ImGui.InputTextMultiline("###CustomShoutMessages", ref CustomMessages, 9999, new Vector2(-1, -1));
+                ImGui.InputTextMultiline(
+                    "###CustomShoutMessages",
+                    ref CustomMessages,
+                    9999,
+                    new Vector2(-1, -1)
+                );
                 if (ImGui.IsItemDeactivatedAfterEdit())
                 {
                     if (!string.IsNullOrWhiteSpace(CustomMessages))
                     {
-                        EurekaHelper.Config.CustomMessages = CustomMessages.Split("\n")
-                            .Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+                        EurekaHelper.Config.CustomMessages = CustomMessages
+                            .Split("\n")
+                            .Where(x => !string.IsNullOrWhiteSpace(x))
+                            .ToList();
                         save = true;
                     }
                     else
@@ -1142,30 +1449,37 @@ namespace EurekaHelper.Windows
 
             ImGui.TextColored(RedColorText, "** DISCLAIMER, READ THIS **");
             ImGui.TextWrapped(
-                "This feature is currently sunset. I do not have the time to investigate this feature again and in the interest of keeping the plugin operation, I will disable this for the foreseeable future. There are other plugins that implement this feature, please use those instead.");
+                "This feature is currently sunset. I do not have the time to investigate this feature again and in the interest of keeping the plugin operation, I will disable this for the foreseeable future. There are other plugins that implement this feature, please use those instead."
+            );
             ImGui.Separator();
             ImGui.Columns(2);
 
-            save |= ImGui.Checkbox("Display Server Id in chat", ref EurekaHelper.Config.DisplayServerId);
+            save |= ImGui.Checkbox(
+                "Display Server Id in chat",
+                ref EurekaHelper.Config.DisplayServerId
+            );
             ImGui.NextColumn();
 
-            save |= ImGui.Checkbox("Display Server Id in \"server info\" bar",
-                ref EurekaHelper.Config.DisplayServerIdInServerInfo);
+            save |= ImGui.Checkbox(
+                "Display Server Id in \"server info\" bar",
+                ref EurekaHelper.Config.DisplayServerIdInServerInfo
+            );
 
             ImGui.Columns(1);
 
             ImGui.Separator();
 
             ImGui.TextWrapped(
-                "This option will display the current server ID of the instance in chat each time you instance into a Eureka zone. " +
-                "This might help you identify unique instances. However, there are a few things you should note." +
-                "\n\nFirst of all, this method is definitely not the best way to uniquely identify Eureka zones." +
-                "\n\nSecondly, according to sources and self-testing, the server ID may get reused for the new instance after the old instance gets locked." +
-                "\n\nExamples:\nIf you enter a Pagos zone with server ID (60) and you rejoin to another Pagos zone with server ID (61), it would have meant that you've just joined another instance." +
-                "\nIf a zone in Pyros with server ID (59) gets locked, on very rare occasions, the new Pyros instance might get the same server ID (59) as well." +
-                "\n\nThirdly, from what I know and have read (but have been unable to test), these server IDs are unique to people in the same world as you. " +
-                "This means that another person in another world will get a different server ID than what you have." +
-                "\n\nAfter reading all this information, I hope that you will use it only for your own good. And I will not be entertaining any feedback mentioning that the server ID is \"incorrect\".");
+                "This option will display the current server ID of the instance in chat each time you instance into a Eureka zone. "
+                    + "This might help you identify unique instances. However, there are a few things you should note."
+                    + "\n\nFirst of all, this method is definitely not the best way to uniquely identify Eureka zones."
+                    + "\n\nSecondly, according to sources and self-testing, the server ID may get reused for the new instance after the old instance gets locked."
+                    + "\n\nExamples:\nIf you enter a Pagos zone with server ID (60) and you rejoin to another Pagos zone with server ID (61), it would have meant that you've just joined another instance."
+                    + "\nIf a zone in Pyros with server ID (59) gets locked, on very rare occasions, the new Pyros instance might get the same server ID (59) as well."
+                    + "\n\nThirdly, from what I know and have read (but have been unable to test), these server IDs are unique to people in the same world as you. "
+                    + "This means that another person in another world will get a different server ID than what you have."
+                    + "\n\nAfter reading all this information, I hope that you will use it only for your own good. And I will not be entertaining any feedback mentioning that the server ID is \"incorrect\"."
+            );
 
             if (save)
                 EurekaHelper.Config.Save();
@@ -1175,10 +1489,12 @@ namespace EurekaHelper.Windows
         {
             ImGui.TextColored(new Vector4(0.0f, 1.0f, 0.0f, 1.0f), "About:");
             ImGui.Indent();
-            ImGui.TextWrapped("Hi there!" +
-                              "\nThis is my first FFXIV plugin, alot of the ideas are shamelessly taken from other plugins." +
-                              "\n\nWelcome to Eureka Helper, a tool to help you on your Eureka Adventures. It offers a small variety of QoL changes and a built-in Eureka Tracker." +
-                              "\nFor those interested in money making NMs (e.g Cassie, Skoll), you can type /arisu (command name from ABBA discord) for their next weather time window!");
+            ImGui.TextWrapped(
+                "Hi there!"
+                    + "\nThis is my first FFXIV plugin, alot of the ideas are shamelessly taken from other plugins."
+                    + "\n\nWelcome to Eureka Helper, a tool to help you on your Eureka Adventures. It offers a small variety of QoL changes and a built-in Eureka Tracker."
+                    + "\nFor those interested in money making NMs (e.g Cassie, Skoll), you can type /arisu (command name from ABBA discord) for their next weather time window!"
+            );
             ImGui.Unindent();
             ImGui.Dummy(new Vector2(0.0f, 10.0f));
 
@@ -1200,14 +1516,20 @@ namespace EurekaHelper.Windows
             //ImGui.Text("Discord:"); ImGui.SameLine(); ImGui.Text("@snorux");
             ImGui.Text("Issues / Feedbacks:");
             ImGui.SameLine();
-            Utils.TextURL("GitHub", $"{userUrl}/EurekaHelper/issues", ImGui.GetColorU32(ImGuiCol.Text));
+            Utils.TextURL(
+                "GitHub",
+                $"{userUrl}/EurekaHelper/issues",
+                ImGui.GetColorU32(ImGuiCol.Text)
+            );
             ImGui.Unindent();
             ImGui.Dummy(new Vector2(0.0f, 10.0f));
 
             ImGui.TextColored(ImGuiColors.ParsedPurple, "Commands");
             ImGui.Indent();
             ImGui.Text("/eurekahelper | /eh | /ehelper → Opens / Closes the configuration window");
-            ImGui.Text("/etrackers → Attempts to get a tracker for the current instance in the same datacenter.");
+            ImGui.Text(
+                "/etrackers → Attempts to get a tracker for the current instance in the same datacenter."
+            );
             ImGui.Text("/erelic → Opens / Closes the Eureka Relic helper window");
             ImGui.Text("/ealarms → Opens / Closes the Eureka Alarms window");
             ImGui.Text("/arisu → Display next weather for Crab, Cassie & Skoll");

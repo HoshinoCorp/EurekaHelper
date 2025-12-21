@@ -36,7 +36,12 @@ namespace EurekaHelper.System
             {
                 if (EurekaHelper.Config.AutoCreateTracker)
                     if (!PluginWindow.GetConnection().IsConnected())
-                        _ = Task.Run(async() => await _plugin.PluginWindow.CreateTracker(Utils.GetIndexOfZone(territoryId), true));
+                        _ = Task.Run(async () =>
+                            await _plugin.PluginWindow.CreateTracker(
+                                Utils.GetIndexOfZone(territoryId),
+                                true
+                            )
+                        );
 
                 EurekaTracker = Utils.GetEurekaTracker(territoryId);
                 DalamudApi.Framework.Update += OnUpdate;
@@ -51,10 +56,14 @@ namespace EurekaHelper.System
         {
             if (EurekaHelper.Config.DisplayFateProgress)
             {
-                var instanceFates = DalamudApi.FateTable.Where(x => !Utils.IsBunnyFate(x.FateId)).ToList();
+                var instanceFates = DalamudApi
+                    .FateTable.Where(x => !Utils.IsBunnyFate(x.FateId))
+                    .ToList();
                 foreach (var fate in instanceFates)
                 {
-                    EurekaFate eurekaFate = EurekaTracker.GetFates().SingleOrDefault(i => fate.FateId == i.FateId);
+                    EurekaFate eurekaFate = EurekaTracker
+                        .GetFates()
+                        .SingleOrDefault(i => fate.FateId == i.FateId);
                     if (eurekaFate is null || eurekaFate.FateProgress == fate.Progress)
                         continue;
 
@@ -63,7 +72,13 @@ namespace EurekaHelper.System
                         eurekaFate.FateProgress = fate.Progress;
                         var sb = new SeStringBuilder()
                             .AddText($"{eurekaFate.BossName}: ")
-                            .Append(Utils.MapLink(eurekaFate.TerritoryId, eurekaFate.MapId, eurekaFate.FatePosition))
+                            .Append(
+                                Utils.MapLink(
+                                    eurekaFate.TerritoryId,
+                                    eurekaFate.MapId,
+                                    eurekaFate.FatePosition
+                                )
+                            )
                             .AddText(" is at ")
                             .AddUiForeground(58)
                             .AddText($"{eurekaFate.FateProgress}%")
@@ -78,7 +93,10 @@ namespace EurekaHelper.System
                 return;
 
             var currFates = DalamudApi.FateTable.Except(lastFates).ToList();
-            var newFates = EurekaTracker.GetFates().Where(i => currFates.Select(i => i.FateId).Contains(i.FateId)).ToList();
+            var newFates = EurekaTracker
+                .GetFates()
+                .Where(i => currFates.Select(i => i.FateId).Contains(i.FateId))
+                .ToList();
 
             foreach (var fate in newFates)
                 DisplayFatePop(fate);
@@ -105,28 +123,34 @@ namespace EurekaHelper.System
                     DalamudApi.ChatGui.RemoveChatLinkHandler(fate.FateId);
                     if (EurekaHelper.Config.PayloadOptions != PayloadOptions.Nothing)
                     {
-                        DalamudLinkPayload payload = DalamudApi.ChatGui.AddChatLinkHandler(fate.FateId, (i, m) =>
-                        {
-                            Utils.SetFlagMarker(fate, randomizeCoords: EurekaHelper.Config.RandomizeMapCoords);
-
-                            switch (EurekaHelper.Config.PayloadOptions)
+                        DalamudLinkPayload payload = DalamudApi.ChatGui.AddChatLinkHandler(
+                            fate.FateId,
+                            (i, m) =>
                             {
-                                case PayloadOptions.CopyToClipboard:
-                                    Utils.CopyToClipboard(Utils.RandomFormattedText(fate));
-                                    break;
+                                Utils.SetFlagMarker(
+                                    fate,
+                                    randomizeCoords: EurekaHelper.Config.RandomizeMapCoords
+                                );
 
-                                default:
-                                case PayloadOptions.ShoutToChat:
-                                    Utils.SendMessage(Utils.RandomFormattedText(fate));
-                                    break;
+                                switch (EurekaHelper.Config.PayloadOptions)
+                                {
+                                    case PayloadOptions.CopyToClipboard:
+                                        Utils.CopyToClipboard(Utils.RandomFormattedText(fate));
+                                        break;
+
+                                    default:
+                                    case PayloadOptions.ShoutToChat:
+                                        Utils.SendMessage(Utils.RandomFormattedText(fate));
+                                        break;
+                                }
                             }
-                        });
+                        );
 
                         var text = EurekaHelper.Config.PayloadOptions switch
                         {
                             PayloadOptions.ShoutToChat => "shout",
                             PayloadOptions.CopyToClipboard => "copy",
-                            _ => "shout"
+                            _ => "shout",
                         };
 
                         sb.AddText(" ");
@@ -142,18 +166,36 @@ namespace EurekaHelper.System
 
                 if (EurekaHelper.Config.AutoPopFate)
                 {
-                    if (PluginWindow.GetConnection().IsConnected() && PluginWindow.GetConnection().CanModify())
+                    if (
+                        PluginWindow.GetConnection().IsConnected()
+                        && PluginWindow.GetConnection().CanModify()
+                    )
                     {
-                        var trackerFate = PluginWindow.GetConnection().GetTracker().GetFates().Find(x => x.IncludeInTracker && x.FateId == fate.FateId);
+                        var trackerFate = PluginWindow
+                            .GetConnection()
+                            .GetTracker()
+                            .GetFates()
+                            .Find(x => x.IncludeInTracker && x.FateId == fate.FateId);
 
                         if (trackerFate is null)
                             return;
 
-                        if (!trackerFate.IsPopped() || (EurekaHelper.Config.AutoPopFateWithinRange && trackerFate.IsRespawnTimeWithinRange(TimeSpan.FromMinutes(5))))
+                        if (
+                            !trackerFate.IsPopped()
+                            || (
+                                EurekaHelper.Config.AutoPopFateWithinRange
+                                && trackerFate.IsRespawnTimeWithinRange(TimeSpan.FromMinutes(5))
+                            )
+                        )
                         {
                             _ = Task.Run(async () =>
                             {
-                                await PluginWindow.GetConnection().SetPopTime((ushort)fate.TrackerId, DateTimeOffset.Now.ToUnixTimeMilliseconds());
+                                await PluginWindow
+                                    .GetConnection()
+                                    .SetPopTime(
+                                        (ushort)fate.TrackerId,
+                                        DateTimeOffset.Now.ToUnixTimeMilliseconds()
+                                    );
                             });
                         }
                     }

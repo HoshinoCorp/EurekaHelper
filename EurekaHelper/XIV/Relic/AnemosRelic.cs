@@ -27,7 +27,7 @@ namespace EurekaHelper.XIV.Relic
 
         private static readonly List<CompletionRequirement> BaseRelicCompletionRequirements = new()
         {
-            new CompletionRequirement(21801, 100)
+            new CompletionRequirement(21801, 100),
         };
         #endregion
 
@@ -52,10 +52,8 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(21970),
         };
 
-        private static readonly List<CompletionRequirement> BasePlusOneCompletionRequirements = new()
-        {
-            new CompletionRequirement(21801, 400)
-        };
+        private static readonly List<CompletionRequirement> BasePlusOneCompletionRequirements =
+            new() { new CompletionRequirement(21801, 400) };
         #endregion
 
         #region Base +2 Weapon
@@ -76,13 +74,11 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(21988),
             new RelicItem(21982),
             new RelicItem(21985),
-            new RelicItem(21986)
+            new RelicItem(21986),
         };
 
-        private static readonly List<CompletionRequirement> BasePlusTwoCompletionRequirements = new()
-        {
-            new CompletionRequirement(21801, 800)
-        };
+        private static readonly List<CompletionRequirement> BasePlusTwoCompletionRequirements =
+            new() { new CompletionRequirement(21801, 800) };
         #endregion
 
         #region Anemos Weapon
@@ -104,12 +100,10 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(21998),
             new RelicItem(22001),
             new RelicItem(22002),
-        };  
-
-        private static readonly List<CompletionRequirement> AnemosWeaponCompletionRequirements = new()
-        {
-            new CompletionRequirement(21802, 3)
         };
+
+        private static readonly List<CompletionRequirement> AnemosWeaponCompletionRequirements =
+            new() { new CompletionRequirement(21802, 3) };
         #endregion
 
         #region Base Armor
@@ -194,7 +188,7 @@ namespace EurekaHelper.XIV.Relic
 
         private static readonly List<CompletionRequirement> BaseArmorCompletionRequirements = new()
         {
-            new CompletionRequirement(21801, 50)
+            new CompletionRequirement(21801, 50),
         };
         #endregion
 
@@ -278,10 +272,8 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(22145),
         };
 
-        private static readonly List<CompletionRequirement> BasePlusOneArmorCompletionRequirements = new()
-        {
-            new CompletionRequirement(21801, 150)
-        };
+        private static readonly List<CompletionRequirement> BasePlusOneArmorCompletionRequirements =
+            new() { new CompletionRequirement(21801, 150) };
         #endregion
 
         #region Base +2 Armor
@@ -364,10 +356,8 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(22220),
         };
 
-        private static readonly List<CompletionRequirement> BasePlusTwoArmorCompletionRequirements = new()
-        {
-            new CompletionRequirement(21801, 400)
-        };
+        private static readonly List<CompletionRequirement> BasePlusTwoArmorCompletionRequirements =
+            new() { new CompletionRequirement(21801, 400) };
         #endregion
 
         #region Anemos Armor
@@ -450,10 +440,8 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(22295),
         };
 
-        private static readonly List<CompletionRequirement> AnemosArmorCompletionRequirements = new()
-        {
-            new CompletionRequirement(21803, 150)
-        };
+        private static readonly List<CompletionRequirement> AnemosArmorCompletionRequirements =
+            new() { new CompletionRequirement(21803, 150) };
         #endregion
 
         public static readonly Dictionary<string, EurekaRelic> AnemosRelicStages = new()
@@ -461,10 +449,19 @@ namespace EurekaHelper.XIV.Relic
             ["Base"] = new EurekaRelic(BaseRelic, BaseRelicCompletionRequirements),
             ["Base +1"] = new EurekaRelic(BasePlusOneRelic, BasePlusOneCompletionRequirements),
             ["Base +2"] = new EurekaRelic(BasePlusTwoRelic, BasePlusTwoCompletionRequirements),
-            ["Anemos Weapon"] = new EurekaRelic(AnemosWeaponRelic, AnemosWeaponCompletionRequirements),
+            ["Anemos Weapon"] = new EurekaRelic(
+                AnemosWeaponRelic,
+                AnemosWeaponCompletionRequirements
+            ),
             ["Base Armor"] = new EurekaRelic(BaseArmorRelic, BaseArmorCompletionRequirements),
-            ["Base +1 Armor"] = new EurekaRelic(BasePlusOneArmorRelic, BasePlusOneArmorCompletionRequirements),
-            ["Base +2 Armor"] = new EurekaRelic(BasePlusTwoArmorRelic, BasePlusTwoCompletionRequirements),
+            ["Base +1 Armor"] = new EurekaRelic(
+                BasePlusOneArmorRelic,
+                BasePlusOneArmorCompletionRequirements
+            ),
+            ["Base +2 Armor"] = new EurekaRelic(
+                BasePlusTwoArmorRelic,
+                BasePlusTwoCompletionRequirements
+            ),
             ["Anemos Armor"] = new EurekaRelic(AnemosArmorRelic, AnemosArmorCompletionRequirements),
         };
     }

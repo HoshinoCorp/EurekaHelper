@@ -1,10 +1,10 @@
-﻿using Dalamud.Game;
-using Dalamud.Game.ClientState.Conditions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using Dalamud.Game;
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Plugin.Services;
 using EurekaHelper.XIV;
 using EurekaHelper.XIV.Zones;
@@ -26,15 +26,17 @@ namespace EurekaHelper.System
             DalamudApi.ClientState.Login += OnLogin;
         }
 
-        public void OnLogin()
-            => GetActiveAlarms();
+        public void OnLogin() => GetActiveAlarms();
 
         public void OnUpdate(IFramework framework)
         {
             if (ActiveAlarms.Count == 0)
                 return;
 
-            if (DalamudApi.Condition[ConditionFlag.BetweenAreas] || DalamudApi.Condition[ConditionFlag.BetweenAreas51])
+            if (
+                DalamudApi.Condition[ConditionFlag.BetweenAreas]
+                || DalamudApi.Condition[ConditionFlag.BetweenAreas51]
+            )
                 return;
 
             if (DalamudApi.ObjectTable.LocalPlayer == null)
@@ -170,8 +172,8 @@ namespace EurekaHelper.System
             ActiveAlarms.RemoveAll(x => x.Item1.ID == alarm.ID);
         }
 
-        public static (DateTime Start, DateTime End) GetUptime(EurekaAlarm alarm)
-            => GetUptime(alarm, DateTime.Now);
+        public static (DateTime Start, DateTime End) GetUptime(EurekaAlarm alarm) =>
+            GetUptime(alarm, DateTime.Now);
 
         public static (DateTime Start, DateTime End) GetUptime(EurekaAlarm alarm, DateTime start)
         {
@@ -181,7 +183,7 @@ namespace EurekaHelper.System
                 {
                     TimeType.Night => EorzeaTime.GetTimeUptime(start, TimeType.Night),
                     TimeType.Day => EorzeaTime.GetTimeUptime(start, TimeType.Day),
-                    _ => throw new NotImplementedException()
+                    _ => throw new NotImplementedException(),
                 };
             }
             else
@@ -192,7 +194,7 @@ namespace EurekaHelper.System
                     763 => EurekaPagos.GetWeatherUptime(alarm.Weather, start),
                     795 => EurekaPyros.GetWeatherUptime(alarm.Weather, start),
                     827 => EurekaHydatos.GetWeatherUptime(alarm.Weather, start),
-                    _ => throw new NotImplementedException()
+                    _ => throw new NotImplementedException(),
                 };
             }
         }

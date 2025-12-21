@@ -8,7 +8,7 @@
         Lightning,
         Fire,
         Ice,
-        Unknown
+        Unknown,
     }
 
     public static class EurekaElementExtensions
@@ -23,7 +23,7 @@
                 EurekaElement.Lightning => "Lightning",
                 EurekaElement.Fire => "Fire",
                 EurekaElement.Ice => "Ice",
-                _ => "Unknown"
+                _ => "Unknown",
             };
         }
     }

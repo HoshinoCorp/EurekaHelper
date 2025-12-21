@@ -25,10 +25,8 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(24655),
         };
 
-        private static readonly List<CompletionRequirement> HydatosWeaponRelicCompletionRequirements = new()
-        {
-            new CompletionRequirement(24807, 50),
-        };
+        private static readonly List<CompletionRequirement> HydatosWeaponRelicCompletionRequirements =
+            new() { new CompletionRequirement(24807, 50) };
         #endregion
 
         #region Hydatos +1 Weapon
@@ -52,10 +50,8 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(24671),
         };
 
-        private static readonly List<CompletionRequirement> HydatosPlusOneWeaponRelicCompletionRequirements = new()
-        {
-            new CompletionRequirement(24807, 100),
-        };
+        private static readonly List<CompletionRequirement> HydatosPlusOneWeaponRelicCompletionRequirements =
+            new() { new CompletionRequirement(24807, 100) };
         #endregion
 
         #region Base Eureka Weapon
@@ -79,10 +75,8 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(24687),
         };
 
-        private static readonly List<CompletionRequirement> BaseEurekaRelicCompletionRequirements = new()
-        {
-            new CompletionRequirement(24807, 100),
-        };
+        private static readonly List<CompletionRequirement> BaseEurekaRelicCompletionRequirements =
+            new() { new CompletionRequirement(24807, 100) };
         #endregion
 
         #region Eureka Weapon
@@ -106,11 +100,8 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(24703),
         };
 
-        private static readonly List<CompletionRequirement> EurekaRelicCompletionRequirements = new()
-        {
-            new CompletionRequirement(24807, 100),
-            new CompletionRequirement(24806, 5)
-        };
+        private static readonly List<CompletionRequirement> EurekaRelicCompletionRequirements =
+            new() { new CompletionRequirement(24807, 100), new CompletionRequirement(24806, 5) };
         #endregion
 
         #region Physeos Weapon
@@ -134,10 +125,8 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(24719),
         };
 
-        private static readonly List<CompletionRequirement> PhyseosRelicCompletionRequirements = new()
-        {
-            new CompletionRequirement(24808, 100),
-        };
+        private static readonly List<CompletionRequirement> PhyseosRelicCompletionRequirements =
+            new() { new CompletionRequirement(24808, 100) };
         #endregion
 
         #region Elemental +1 Armor
@@ -180,11 +169,12 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(24752),
         };
 
-        private static readonly List<CompletionRequirement> ElementalPlusOneArmorRelicCompletionRequirements = new()
-        {
-            new CompletionRequirement(24807, 50),
-            new CompletionRequirement(0, 56, "Logos Actions Unlocked")
-        };
+        private static readonly List<CompletionRequirement> ElementalPlusOneArmorRelicCompletionRequirements =
+            new()
+            {
+                new CompletionRequirement(24807, 50),
+                new CompletionRequirement(0, 56, "Logos Actions Unlocked"),
+            };
         #endregion
 
         #region Elemental +1 Armor
@@ -227,21 +217,34 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(24787),
         };
 
-        private static readonly List<CompletionRequirement> ElementalPlusTwoArmorRelicCompletionRequirements = new()
-        {
-            new CompletionRequirement(24808, 35),
-        };
+        private static readonly List<CompletionRequirement> ElementalPlusTwoArmorRelicCompletionRequirements =
+            new() { new CompletionRequirement(24808, 35) };
         #endregion
 
         public static readonly Dictionary<string, EurekaRelic> HydatosRelicStages = new()
         {
-            ["Hydatos Weapon"] = new EurekaRelic(HydatosWeaponRelic, HydatosWeaponRelicCompletionRequirements),
-            ["Hydatos +1"] = new EurekaRelic(HydatosPlusOneWeaponRelic, HydatosPlusOneWeaponRelicCompletionRequirements),
-            ["Base Eureka"] = new EurekaRelic(BaseEurekaRelic, BaseEurekaRelicCompletionRequirements),
+            ["Hydatos Weapon"] = new EurekaRelic(
+                HydatosWeaponRelic,
+                HydatosWeaponRelicCompletionRequirements
+            ),
+            ["Hydatos +1"] = new EurekaRelic(
+                HydatosPlusOneWeaponRelic,
+                HydatosPlusOneWeaponRelicCompletionRequirements
+            ),
+            ["Base Eureka"] = new EurekaRelic(
+                BaseEurekaRelic,
+                BaseEurekaRelicCompletionRequirements
+            ),
             ["Eureka Weapon"] = new EurekaRelic(EurekaRelic, EurekaRelicCompletionRequirements),
             ["Physeos"] = new EurekaRelic(PhyseosRelic, PhyseosRelicCompletionRequirements),
-            ["Elemental +1 Armor"] = new EurekaRelic(ElementalPlusOneArmorRelic, ElementalPlusOneArmorRelicCompletionRequirements),
-            ["Elemental +2 Armor"] = new EurekaRelic(ElementalPlusTwoArmorRelic, ElementalPlusTwoArmorRelicCompletionRequirements)
+            ["Elemental +1 Armor"] = new EurekaRelic(
+                ElementalPlusOneArmorRelic,
+                ElementalPlusOneArmorRelicCompletionRequirements
+            ),
+            ["Elemental +2 Armor"] = new EurekaRelic(
+                ElementalPlusTwoArmorRelic,
+                ElementalPlusTwoArmorRelicCompletionRequirements
+            ),
         };
     }
 }

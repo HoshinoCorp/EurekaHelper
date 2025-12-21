@@ -1,5 +1,5 @@
-﻿using Dalamud.Game.Text.SeStringHandling;
-using System;
+﻿using System;
+using Dalamud.Game.Text.SeStringHandling;
 using EurekaHelper.System;
 
 namespace EurekaHelper.XIV
@@ -7,13 +7,13 @@ namespace EurekaHelper.XIV
     public enum AlarmType
     {
         Weather,
-        Time
+        Time,
     }
 
     public enum TimeType
     {
         Day,
-        Night
+        Night,
     }
 
     public class EurekaAlarm
@@ -44,7 +44,6 @@ namespace EurekaHelper.XIV
                 .Append($"[{Name}] ")
                 .AddUiForegroundOff();
 
-
             if (Type == AlarmType.Weather)
                 sb.AddUiForeground(508)
                     .Append($"{Weather.ToFriendlyString()} ")
@@ -56,9 +55,7 @@ namespace EurekaHelper.XIV
                     .Append($"{Utils.GetZoneName(ZoneId)} ")
                     .AddUiForegroundOff();
             else
-                sb.AddUiForeground(508)
-                    .Append($"{TimeType} ")
-                    .AddUiForegroundOff();
+                sb.AddUiForeground(508).Append($"{TimeType} ").AddUiForegroundOff();
 
             if (uptime.Start > DateTime.Now)
             {
@@ -67,7 +64,9 @@ namespace EurekaHelper.XIV
                     .Append("will be up in ")
                     .AddUiForegroundOff()
                     .AddUiForeground(559)
-                    .Append($"{(diff.ToString(diff.Hours > 0 ? "hh'h 'mm'm 'ss's'" : "mm'm 'ss's'"))} ")
+                    .Append(
+                        $"{(diff.ToString(diff.Hours > 0 ? "hh'h 'mm'm 'ss's'" : "mm'm 'ss's'"))} "
+                    )
                     .AddUiForegroundOff()
                     .AddUiForeground(523)
                     .Append("@ ")
@@ -83,7 +82,9 @@ namespace EurekaHelper.XIV
                     .Append("will be up for the next ")
                     .AddUiForegroundOff()
                     .AddUiForeground(559)
-                    .Append($"{(diff.ToString(diff.Hours > 0 ? "hh'h 'mm'm 'ss's'" : "mm'm 'ss's'"))} ")
+                    .Append(
+                        $"{(diff.ToString(diff.Hours > 0 ? "hh'h 'mm'm 'ss's'" : "mm'm 'ss's'"))} "
+                    )
                     .AddUiForegroundOff()
                     .AddUiForeground(523)
                     .Append("to ")
@@ -91,20 +92,19 @@ namespace EurekaHelper.XIV
                     .AddUiForeground(559)
                     .Append($"{uptime.End:d MMM yyyy hh:mm tt}")
                     .AddUiForegroundOff();
-
             }
 
             if (PrintMessage)
                 EurekaHelper.PrintMessage(sb.BuiltString);
-                // do something
+            // do something
 
             if (ShowToast)
                 DalamudApi.ToastGui.ShowQuest(sb.BuiltString);
-                // do something
+            // do something
         }
 
-        public EurekaAlarm Clone()
-            => new()
+        public EurekaAlarm Clone() =>
+            new()
             {
                 ID = ID,
                 Name = Name,

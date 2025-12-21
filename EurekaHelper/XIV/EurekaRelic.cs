@@ -7,7 +7,10 @@ namespace EurekaHelper.XIV
         public List<RelicItem> RelicItems { get; set; }
         public List<CompletionRequirement> CompletionRequirements { get; set; }
 
-        public EurekaRelic(List<RelicItem> relicItems, List<CompletionRequirement> completionRequirements) 
+        public EurekaRelic(
+            List<RelicItem> relicItems,
+            List<CompletionRequirement> completionRequirements
+        )
         {
             RelicItems = relicItems;
             CompletionRequirements = completionRequirements;
@@ -21,7 +24,7 @@ namespace EurekaHelper.XIV
         public string JobCategory { get; set; }
 
         public RelicItem(uint itemId)
-        { 
+        {
             ItemId = itemId;
             ItemName = Utils.GetItemName(itemId);
             JobCategory = Utils.GetJobCategory(itemId);

@@ -1,7 +1,7 @@
-﻿using Dalamud.Configuration;
-using Dalamud.Game.Text;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Dalamud.Configuration;
+using Dalamud.Game.Text;
 using EurekaHelper.System;
 using EurekaHelper.XIV;
 
@@ -11,7 +11,7 @@ namespace EurekaHelper
     {
         ShoutToChat,
         CopyToClipboard,
-        Nothing
+        Nothing,
     }
 
     [Serializable]
@@ -19,18 +19,18 @@ namespace EurekaHelper
     {
         public int Version { get; set; } = 3;
 
-        public void Initialize() 
+        public void Initialize()
         {
             if (CustomMessages.Count == 0)
             {
                 CustomMessages.Add("/shout %bossName% POP. %flag%");
             }
-            
+
             if (Version < 3)
             {
                 Version = 3;
             }
-            
+
             if (!Enum.IsDefined(typeof(ChatSoundEffect), NMChatSoundEffect))
             {
                 DalamudApi.Log.Error($"NM Sound Effect ID is invalid, resetting to default.");
@@ -48,24 +48,30 @@ namespace EurekaHelper
             }
             if (!Enum.IsDefined(typeof(BaseSoundEffect), BunnySoundEffect))
             {
-                DalamudApi.Log.Error($"Bunny Chat Sound Effect ID is invalid, resetting to default.");
+                DalamudApi.Log.Error(
+                    $"Bunny Chat Sound Effect ID is invalid, resetting to default."
+                );
                 BunnySoundEffect = BaseSoundEffect.SoundEffect41;
             }
-            
+
             foreach (var alarm in Alarms)
             {
                 if (!Enum.IsDefined(typeof(BaseSoundEffect), alarm.SoundEffect))
                 {
-                    DalamudApi.Log.Error($"Alarm Sound Effect ID is invalid, resetting to default.");
+                    DalamudApi.Log.Error(
+                        $"Alarm Sound Effect ID is invalid, resetting to default."
+                    );
                     alarm.SoundEffect = BaseSoundEffect.SoundEffect36;
                 }
                 if (!Enum.IsDefined(typeof(ChatSoundEffect), alarm.ChatSoundEffect))
                 {
-                    DalamudApi.Log.Error($"Alarm Chat Sound Effect ID is invalid, resetting to default.");
+                    DalamudApi.Log.Error(
+                        $"Alarm Chat Sound Effect ID is invalid, resetting to default."
+                    );
                     alarm.ChatSoundEffect = ChatSoundEffect.ChatSoundEffect1;
                 }
             }
-            
+
             Save();
         }
 
@@ -104,7 +110,8 @@ namespace EurekaHelper
 
         public BaseSoundEffect BunnySoundEffect { get; set; } = BaseSoundEffect.SoundEffect41;
         public ChatSoundEffect NMChatSoundEffect { get; set; } = ChatSoundEffect.ChatSoundEffect1;
-        public ChatSoundEffect BunnyChatSoundEffect { get; set; } = ChatSoundEffect.ChatSoundEffect6;
+        public ChatSoundEffect BunnyChatSoundEffect { get; set; } =
+            ChatSoundEffect.ChatSoundEffect6;
 
         public PayloadOptions PayloadOptions { get; set; } = PayloadOptions.ShoutToChat;
 
@@ -129,7 +136,8 @@ namespace EurekaHelper
 
         public bool ElementalAlwaysClear = false;
 
-        public PayloadOptions ElementalPayloadOptions { get; set;} = PayloadOptions.CopyToClipboard;
+        public PayloadOptions ElementalPayloadOptions { get; set; } =
+            PayloadOptions.CopyToClipboard;
 
         /*
          * Relic Configurations

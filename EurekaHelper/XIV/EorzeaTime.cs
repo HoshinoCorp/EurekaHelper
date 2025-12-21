@@ -48,7 +48,9 @@ namespace EurekaHelper.XIV
             else
                 nextNight = EorzeaDateTime.Date + new TimeSpan(1, 6, 0, 0);
 
-            return TimeSpan.FromTicks(Convert.ToInt64((nextNight - EorzeaDateTime).Ticks * 7D / 144D));
+            return TimeSpan.FromTicks(
+                Convert.ToInt64((nextNight - EorzeaDateTime).Ticks * 7D / 144D)
+            );
         }
 
         public TimeSpan TimeUntilNight()
@@ -59,10 +61,15 @@ namespace EurekaHelper.XIV
             else
                 nextDay = EorzeaDateTime.Date + new TimeSpan(1, 19, 0, 0);
 
-            return TimeSpan.FromTicks(Convert.ToInt64((nextDay - EorzeaDateTime).Ticks * 7D / 144D));
+            return TimeSpan.FromTicks(
+                Convert.ToInt64((nextDay - EorzeaDateTime).Ticks * 7D / 144D)
+            );
         }
 
-        public static (DateTime Start, DateTime End) GetTimeUptime(DateTime start, TimeType timeType)
+        public static (DateTime Start, DateTime End) GetTimeUptime(
+            DateTime start,
+            TimeType timeType
+        )
         {
             var et = ToEorzeaTime(start);
 
@@ -70,8 +77,12 @@ namespace EurekaHelper.XIV
             {
                 if (et.EorzeaDateTime.Hour >= 19 || et.EorzeaDateTime.Hour < 6)
                 {
-                    var sevenPmToday = et.EorzeaDateTime.Date.AddDays(et.EorzeaDateTime.Hour < 6 ? -1 : 0).AddHours(19);
-                    var ts = TimeSpan.FromTicks(Convert.ToInt64((et.EorzeaDateTime - sevenPmToday).Ticks * 7D / 144D));
+                    var sevenPmToday = et
+                        .EorzeaDateTime.Date.AddDays(et.EorzeaDateTime.Hour < 6 ? -1 : 0)
+                        .AddHours(19);
+                    var ts = TimeSpan.FromTicks(
+                        Convert.ToInt64((et.EorzeaDateTime - sevenPmToday).Ticks * 7D / 144D)
+                    );
 
                     return (start - ts, start + et.TimeUntilDay());
                 }
@@ -85,7 +96,9 @@ namespace EurekaHelper.XIV
                 if (et.EorzeaDateTime.Hour >= 6 && et.EorzeaDateTime.Hour < 18)
                 {
                     var sixAmToday = et.EorzeaDateTime.Date.AddHours(6);
-                    var ts = TimeSpan.FromTicks(Convert.ToInt64((et.EorzeaDateTime - sixAmToday).Ticks * 7D / 144D));
+                    var ts = TimeSpan.FromTicks(
+                        Convert.ToInt64((et.EorzeaDateTime - sixAmToday).Ticks * 7D / 144D)
+                    );
 
                     return (start - ts, start + et.TimeUntilNight());
                 }
@@ -96,8 +109,7 @@ namespace EurekaHelper.XIV
             }
         }
 
-        public static (DateTime Start, DateTime End) NextDayTime()
-            => NextDayTime(DateTime.Now);
+        public static (DateTime Start, DateTime End) NextDayTime() => NextDayTime(DateTime.Now);
 
         public static (DateTime Start, DateTime End) NextDayTime(DateTime start)
         {
@@ -107,8 +119,7 @@ namespace EurekaHelper.XIV
             return (nextDayTime, nextDayTime + nextNightTime);
         }
 
-        public static (DateTime Start, DateTime End) NextNightTime()
-            => NextNightTime(DateTime.Now);
+        public static (DateTime Start, DateTime End) NextNightTime() => NextNightTime(DateTime.Now);
 
         public static (DateTime Start, DateTime End) NextNightTime(DateTime start)
         {

@@ -25,10 +25,8 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(22937),
         };
 
-        private static readonly List<CompletionRequirement> PagosWeaponRelicCompletionRequirements = new()
-        {
-            new CompletionRequirement(23309, 5)
-        };
+        private static readonly List<CompletionRequirement> PagosWeaponRelicCompletionRequirements =
+            new() { new CompletionRequirement(23309, 5) };
         #endregion
 
         #region Pagos +1 Weapon
@@ -52,11 +50,8 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(22953),
         };
 
-        private static readonly List<CompletionRequirement> PagosPlusOneRelicCompletionRequirements = new()
-        {
-            new CompletionRequirement(23309, 10),
-            new CompletionRequirement(22976, 500)
-        };
+        private static readonly List<CompletionRequirement> PagosPlusOneRelicCompletionRequirements =
+            new() { new CompletionRequirement(23309, 10), new CompletionRequirement(22976, 500) };
         #endregion
 
         #region Elemental Weapon
@@ -80,18 +75,24 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(22969),
         };
 
-        private static readonly List<CompletionRequirement> ElementalRelicCompletionRequirements = new()
-        {
-            new CompletionRequirement(23309, 16),
-            new CompletionRequirement(22975, 5)
-        };
+        private static readonly List<CompletionRequirement> ElementalRelicCompletionRequirements =
+            new() { new CompletionRequirement(23309, 16), new CompletionRequirement(22975, 5) };
         #endregion
 
         public static readonly Dictionary<string, EurekaRelic> AnemosRelicStages = new()
         {
-            ["Pagos Weapon"] = new EurekaRelic(PagosWeaponRelic, PagosWeaponRelicCompletionRequirements),
-            ["Pagos +1"] = new EurekaRelic(PagosPlusOneWeaponRelic, PagosPlusOneRelicCompletionRequirements),
-            ["Elemental"] = new EurekaRelic(ElementalWeaponRelic, ElementalRelicCompletionRequirements)
+            ["Pagos Weapon"] = new EurekaRelic(
+                PagosWeaponRelic,
+                PagosWeaponRelicCompletionRequirements
+            ),
+            ["Pagos +1"] = new EurekaRelic(
+                PagosPlusOneWeaponRelic,
+                PagosPlusOneRelicCompletionRequirements
+            ),
+            ["Elemental"] = new EurekaRelic(
+                ElementalWeaponRelic,
+                ElementalRelicCompletionRequirements
+            ),
         };
     }
 }

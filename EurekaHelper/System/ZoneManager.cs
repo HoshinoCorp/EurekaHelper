@@ -1,9 +1,9 @@
-﻿using Dalamud.Game.Gui.Dtr;
+﻿using System;
+using Dalamud.Game.Gui.Dtr;
 using Dalamud.Hooking;
 using Dalamud.Logging;
 using Dalamud.Memory;
 using Dalamud.Utility.Signatures;
-using System;
 
 namespace EurekaHelper.System
 {
@@ -28,7 +28,10 @@ namespace EurekaHelper.System
             {
                 for (var i = 0; i < 5; i++)
                 {
-                    DalamudApi.Log.Error(ex, $"Failed to acquire DtrBarEntry {dtrBarTitle}, trying {dtrBarTitle}{i}");
+                    DalamudApi.Log.Error(
+                        ex,
+                        $"Failed to acquire DtrBarEntry {dtrBarTitle}, trying {dtrBarTitle}{i}"
+                    );
                     try
                     {
                         _dtrBarEntry = DalamudApi.DtrBar.Get($"{dtrBarTitle}{i}");
@@ -79,7 +82,9 @@ namespace EurekaHelper.System
             }
             catch (Exception ex)
             {
-                DalamudApi.Log.Error($"Something went wrong. Please contact the author.\n{ex.Message}");
+                DalamudApi.Log.Error(
+                    $"Something went wrong. Please contact the author.\n{ex.Message}"
+                );
             }
 
             //return InitZoneHook.Original(a1, a2, a3);

@@ -4,7 +4,13 @@ namespace EurekaHelper.XIV
 {
     public class EurekaTrackerMessage
     {
-        public EurekaTrackerMessage(bool setFirstValue, int messageId, string channel, string @event, JObject payload)
+        public EurekaTrackerMessage(
+            bool setFirstValue,
+            int messageId,
+            string channel,
+            string @event,
+            JObject payload
+        )
         {
             SetFirstValue = setFirstValue;
             MessageId = messageId;
@@ -27,7 +33,7 @@ namespace EurekaHelper.XIV
                 MessageId.ToString(),
                 Channel,
                 Event,
-                Payload == null ? "null" : Payload
+                Payload == null ? "null" : Payload,
             };
 
             return array.ToString();

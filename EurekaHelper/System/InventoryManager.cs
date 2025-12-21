@@ -1,9 +1,9 @@
-﻿using Dalamud.Logging;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Dalamud.Logging;
+using FFXIVClientStructs.FFXIV.Client.Game;
 
 namespace EurekaHelper.System
 {
@@ -50,14 +50,19 @@ namespace EurekaHelper.System
 
         public InventoryManager()
         {
-            DalamudApi.Framework.RunOnTick(ScanInventories, TimeSpan.FromMilliseconds(500), cancellationToken: CancellationTokenSource.Token);
+            DalamudApi.Framework.RunOnTick(
+                ScanInventories,
+                TimeSpan.FromMilliseconds(500),
+                cancellationToken: CancellationTokenSource.Token
+            );
         }
 
         private unsafe void ScanInventories()
         {
             try
             {
-                var inventoryManger = FFXIVClientStructs.FFXIV.Client.Game.InventoryManager.Instance();
+                var inventoryManger =
+                    FFXIVClientStructs.FFXIV.Client.Game.InventoryManager.Instance();
 
                 foreach (var item in ScannedItems.ToList())
                 {
@@ -72,10 +77,15 @@ namespace EurekaHelper.System
                         if (inventory->IsLoaded == false)
                             continue;
 
-                        totalCount += inventoryManger->GetItemCountInContainer(item.Key, inventoryType);
+                        totalCount += inventoryManger->GetItemCountInContainer(
+                            item.Key,
+                            inventoryType
+                        );
 
                         if (ScannedItems[item.Key].Any(x => x.InventoryType == inventoryType))
-                            ScannedItems[item.Key].Single(x => x.InventoryType == inventoryType).Count = totalCount;
+                            ScannedItems[item.Key]
+                                .Single(x => x.InventoryType == inventoryType)
+                                .Count = totalCount;
                         else
                             ScannedItems[item.Key].Add(new(inventoryType, totalCount));
                     }
@@ -87,7 +97,11 @@ namespace EurekaHelper.System
             }
             finally
             {
-                DalamudApi.Framework.RunOnTick(ScanInventories, TimeSpan.FromMilliseconds(500), cancellationToken: CancellationTokenSource.Token);
+                DalamudApi.Framework.RunOnTick(
+                    ScanInventories,
+                    TimeSpan.FromMilliseconds(500),
+                    cancellationToken: CancellationTokenSource.Token
+                );
             }
         }
 

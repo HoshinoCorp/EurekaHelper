@@ -18,7 +18,7 @@ namespace EurekaHelper.System
                 PlaySoundEffect(alarm.SoundEffect);
             }
         }
-        
+
         public static void PlayNMSoundEffect()
         {
             if (EurekaHelper.Config.GlobalUseChatSoundEffect)
@@ -30,7 +30,7 @@ namespace EurekaHelper.System
                 PlaySoundEffect(EurekaHelper.Config.NMSoundEffect);
             }
         }
-        
+
         public static void PlayBunnySoundEffect()
         {
             if (EurekaHelper.Config.GlobalUseChatSoundEffect)
@@ -42,23 +42,27 @@ namespace EurekaHelper.System
                 PlaySoundEffect(EurekaHelper.Config.BunnySoundEffect);
             }
         }
-        
+
         public static void PlaySoundEffect(BaseSoundEffect soundEffect)
         {
             if (!Enum.IsDefined(typeof(BaseSoundEffect), soundEffect))
             {
-                DalamudApi.Log.Error($"Invalid sound effect ID sent to SoundManager, silently failing. Report this to the plugin creator: {soundEffect}");
+                DalamudApi.Log.Error(
+                    $"Invalid sound effect ID sent to SoundManager, silently failing. Report this to the plugin creator: {soundEffect}"
+                );
                 soundEffect = BaseSoundEffect.SoundEffect36;
             }
-            
+
             UIGlobals.PlaySoundEffect((uint)soundEffect);
         }
-        
+
         public static void PlaySoundEffect(ChatSoundEffect soundEffect)
         {
             if (!Enum.IsDefined(typeof(ChatSoundEffect), soundEffect))
             {
-                DalamudApi.Log.Error($"Invalid sound effect ID sent to SoundManager, silently failing. report this to the plugin creator: {soundEffect}");
+                DalamudApi.Log.Error(
+                    $"Invalid sound effect ID sent to SoundManager, silently failing. report this to the plugin creator: {soundEffect}"
+                );
                 soundEffect = ChatSoundEffect.ChatSoundEffect1;
             }
 

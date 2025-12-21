@@ -17,7 +17,7 @@ namespace EurekaHelper.XIV
         UmbralWind,
         Thunderstorms,
         Gloom,
-        None
+        None,
     }
 
     public static class EurekaWeatherExtensions
@@ -59,9 +59,12 @@ namespace EurekaHelper.XIV
             return (int)(step2 % 0x64);
         }
 
-        public static EurekaWeather Forecast((int, EurekaWeather)[] weathers, int chance) => weathers.Where(_ => chance < _.Item1).Select(_ => _.Item2).FirstOrDefault();
+        public static EurekaWeather Forecast((int, EurekaWeather)[] weathers, int chance) =>
+            weathers.Where(_ => chance < _.Item1).Select(_ => _.Item2).FirstOrDefault();
 
-        public static (EurekaWeather weather, TimeSpan time) GetCurrentWeatherInfo((int, EurekaWeather)[] weathers)
+        public static (EurekaWeather weather, TimeSpan time) GetCurrentWeatherInfo(
+            (int, EurekaWeather)[] weathers
+        )
         {
             int chance = CalculateTarget(DateTime.Now.ToUniversalTime());
             EurekaWeather weather = Forecast(weathers, chance);
@@ -72,12 +75,16 @@ namespace EurekaHelper.XIV
             return (weather, timeNow.ToLocalTime() - DateTime.Now);
         }
 
-        public static List<(EurekaWeather Weather, TimeSpan Time)> GetAllWeathers((int, EurekaWeather)[] weathers)
+        public static List<(EurekaWeather Weather, TimeSpan Time)> GetAllWeathers(
+            (int, EurekaWeather)[] weathers
+        )
         {
             List<(EurekaWeather, TimeSpan)> results = new();
             foreach (var weather in weathers)
             {
-                var nextInterval = EorzeaTime.GetNearestEarthInterval(DateTime.Now) + TimeSpan.FromMilliseconds(EorzeaTime.EIGHT_HOURS);
+                var nextInterval =
+                    EorzeaTime.GetNearestEarthInterval(DateTime.Now)
+                    + TimeSpan.FromMilliseconds(EorzeaTime.EIGHT_HOURS);
                 do
                 {
                     if (Forecast(weathers, CalculateTarget(nextInterval)) == weather.Item2)
@@ -87,17 +94,24 @@ namespace EurekaHelper.XIV
                     }
 
                     nextInterval += TimeSpan.FromMilliseconds(EorzeaTime.EIGHT_HOURS);
-                }
-                while (true);
+                } while (true);
             }
 
             return results;
         }
 
-        public static List<DateTime> GetCountWeatherForecasts(EurekaWeather targetWeather, int count, (int, EurekaWeather)[] weathers)
-            => GetCountWeatherForecasts(targetWeather, count, weathers, DateTime.Now);
+        public static List<DateTime> GetCountWeatherForecasts(
+            EurekaWeather targetWeather,
+            int count,
+            (int, EurekaWeather)[] weathers
+        ) => GetCountWeatherForecasts(targetWeather, count, weathers, DateTime.Now);
 
-        public static List<DateTime> GetCountWeatherForecasts(EurekaWeather targetWeather, int count, (int, EurekaWeather)[] weathers, DateTime start)
+        public static List<DateTime> GetCountWeatherForecasts(
+            EurekaWeather targetWeather,
+            int count,
+            (int, EurekaWeather)[] weathers,
+            DateTime start
+        )
         {
             var timeNow = EorzeaTime.GetNearestEarthInterval(start);
             int counter = 0;
@@ -115,13 +129,16 @@ namespace EurekaHelper.XIV
                 }
 
                 timeNow += TimeSpan.FromMilliseconds(EorzeaTime.EIGHT_HOURS);
-            }
-            while (counter < count);
+            } while (counter < count);
 
             return result;
         }
 
-        public static (DateTime Start, DateTime End) GetWeatherUptime(EurekaWeather targetWeather, (int, EurekaWeather)[] weathers, DateTime start)
+        public static (DateTime Start, DateTime End) GetWeatherUptime(
+            EurekaWeather targetWeather,
+            (int, EurekaWeather)[] weathers,
+            DateTime start
+        )
         {
             var timeStart = GetCountWeatherForecasts(targetWeather, 1, weathers, start)[0];
             var timeEnd = timeStart + TimeSpan.FromMilliseconds(EorzeaTime.EIGHT_HOURS);

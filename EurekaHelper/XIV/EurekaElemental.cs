@@ -1,8 +1,8 @@
-﻿using Dalamud.Game.Text.SeStringHandling;
+﻿using System;
+using System.Numerics;
+using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Utility;
-using System;
-using System.Numerics;
 using Lumina.Excel.Sheets;
 
 namespace EurekaHelper.XIV
@@ -17,8 +17,7 @@ namespace EurekaHelper.XIV
         public ushort MapId { get; set; }
         public long LastSeen { get; set; }
 
-
-        public EurekaElemental(string name, ushort territoryId, Vector3 position, uint objectId) 
+        public EurekaElemental(string name, ushort territoryId, Vector3 position, uint objectId)
         {
             Name = name;
             TerritoryId = territoryId;
@@ -31,17 +30,23 @@ namespace EurekaHelper.XIV
                 763 => 467,
                 795 => 484,
                 827 => 515,
-                _ => throw new NotImplementedException()
+                _ => throw new NotImplementedException(),
             };
 
-            var territoryType = DalamudApi.DataManager.GetExcelSheet<TerritoryType>()!.GetRow(territoryId);
-            Position = MapUtil.WorldToMap(new Vector2(RawPosition.X, RawPosition.Z), territoryType.Map.Value);
+            var territoryType = DalamudApi
+                .DataManager.GetExcelSheet<TerritoryType>()!
+                .GetRow(territoryId);
+            Position = MapUtil.WorldToMap(
+                new Vector2(RawPosition.X, RawPosition.Z),
+                territoryType.Map.Value
+            );
 
             LastSeen = DateTimeOffset.Now.ToUnixTimeSeconds();
         }
 
         public SeString GetMapLink() => Utils.MapLink(TerritoryId, MapId, Position);
 
-        public MapLinkPayload GetMapLinkPayload() => new(TerritoryId, MapId, Position.X, Position.Y);
+        public MapLinkPayload GetMapLinkPayload() =>
+            new(TerritoryId, MapId, Position.X, Position.Y);
     }
 }

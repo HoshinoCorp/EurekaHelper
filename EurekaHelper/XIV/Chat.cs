@@ -1,5 +1,5 @@
 ﻿/*
-https://git.annaclemens.io/ascclemens/XivCommon/src/branch/main/XivCommon/Functions/Chat.cs 
+https://git.annaclemens.io/ascclemens/XivCommon/src/branch/main/XivCommon/Functions/Chat.cs
 MIT License
 Copyright (c) 2021 Anna Clemens
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,6 +24,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using FFXIVClientStructs.FFXIV.Client.System.String;
 using FFXIVClientStructs.FFXIV.Client.UI;
+
 namespace EurekaHelper.XIV;
 
 /// <summary>
@@ -51,6 +52,7 @@ public unsafe class Chat
         UIModule.Instance()->ProcessChatBoxEntry(mes);
         mes->Dtor(true);
     }
+
     /// <summary>
     /// <para>
     /// Send a given message to the chat box. <b>This can send chat to the server.</b>
@@ -82,13 +84,16 @@ public unsafe class Chat
     }
 
     /// <summary>
-    /// Executes command as if it was typed in chat box. 
+    /// Executes command as if it was typed in chat box.
     /// </summary>
     /// <param name="message">Full text of the command.</param>
     /// <exception cref="InvalidOperationException">If you didn't prefixed it with a slash.</exception>
     public static void ExecuteCommand(string message)
     {
-        if (!message.StartsWith("/")) throw new InvalidOperationException($"Attempted to execute command but was not prefixed with a slash: {message}");
+        if (!message.StartsWith("/"))
+            throw new InvalidOperationException(
+                $"Attempted to execute command but was not prefixed with a slash: {message}"
+            );
         SendMessage(message);
     }
 
@@ -110,7 +115,15 @@ public unsafe class Chat
         var uText = Utf8String.FromString(text);
 
         // 0x27
-        uText->SanitizeString(AllowedEntities.UppercaseLetters | AllowedEntities.LowercaseLetters | AllowedEntities.Numbers | AllowedEntities.OtherCharacters | AllowedEntities.Payloads | AllowedEntities.SpecialCharacters, (Utf8String*)nint.Zero);
+        uText->SanitizeString(
+            AllowedEntities.UppercaseLetters
+                | AllowedEntities.LowercaseLetters
+                | AllowedEntities.Numbers
+                | AllowedEntities.OtherCharacters
+                | AllowedEntities.Payloads
+                | AllowedEntities.SpecialCharacters,
+            (Utf8String*)nint.Zero
+        );
         var sanitised = uText->ToString();
         uText->Dtor(true);
 

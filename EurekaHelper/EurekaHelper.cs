@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Linq;
+using System.Numerics;
+using System.Threading;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
-using Newtonsoft.Json.Linq;
-using System.Linq;
-using System.Numerics;
-using System.Threading;
 using EurekaHelper.System;
 using EurekaHelper.Windows;
 using EurekaHelper.XIV;
 using EurekaHelper.XIV.Zones;
+using Newtonsoft.Json.Linq;
 
 namespace EurekaHelper;
 
@@ -77,41 +77,99 @@ public class EurekaHelper : IDalamudPlugin
         Config.DisplayBunnyFates = true;
         Config.GlobalUseChatSoundEffect = true;
         PrintMessage("[EH Test] Chat, then base");
-        var bunnyfate = new EurekaFate(1425, null, 827, 515, "Test", "Bunny Boss", "Bun",
-            new Vector2(14.0f, 21.5f), null, Vector2.Zero, EurekaWeather.None, EurekaWeather.None,
-            EurekaElement.Unknown, EurekaElement.Unknown, false, 50, false, true);
-        var realfate = new EurekaFate(1425, null, 827, 515, "Test", "Madge Boss", "Madge",
-            new Vector2(14.0f, 21.5f), null, Vector2.Zero, EurekaWeather.None, EurekaWeather.None,
-            EurekaElement.Unknown, EurekaElement.Unknown, false, 50, false, false);
+        var bunnyfate = new EurekaFate(
+            1425,
+            null,
+            827,
+            515,
+            "Test",
+            "Bunny Boss",
+            "Bun",
+            new Vector2(14.0f, 21.5f),
+            null,
+            Vector2.Zero,
+            EurekaWeather.None,
+            EurekaWeather.None,
+            EurekaElement.Unknown,
+            EurekaElement.Unknown,
+            false,
+            50,
+            false,
+            true
+        );
+        var realfate = new EurekaFate(
+            1425,
+            null,
+            827,
+            515,
+            "Test",
+            "Madge Boss",
+            "Madge",
+            new Vector2(14.0f, 21.5f),
+            null,
+            Vector2.Zero,
+            EurekaWeather.None,
+            EurekaWeather.None,
+            EurekaElement.Unknown,
+            EurekaElement.Unknown,
+            false,
+            50,
+            false,
+            false
+        );
 
-        DalamudApi.Framework.RunOnTick(() => FateManager.DisplayFatePop(bunnyfate), delay * delayTicks++);
-        DalamudApi.Framework.RunOnTick(() =>
-        {
-            Config.PayloadOptions = PayloadOptions.Nothing;
-            FateManager.DisplayFatePop(realfate);
-        }, delay * delayTicks++);
-        DalamudApi.Framework.RunOnTick(() => FateManager.DisplayFatePop(bunnyfate), delay * delayTicks++);
+        DalamudApi.Framework.RunOnTick(
+            () => FateManager.DisplayFatePop(bunnyfate),
+            delay * delayTicks++
+        );
+        DalamudApi.Framework.RunOnTick(
+            () =>
+            {
+                Config.PayloadOptions = PayloadOptions.Nothing;
+                FateManager.DisplayFatePop(realfate);
+            },
+            delay * delayTicks++
+        );
+        DalamudApi.Framework.RunOnTick(
+            () => FateManager.DisplayFatePop(bunnyfate),
+            delay * delayTicks++
+        );
 
-        DalamudApi.Framework.RunOnTick(() => { Config.GlobalUseChatSoundEffect = false; }, delay * delayTicks++);
+        DalamudApi.Framework.RunOnTick(
+            () =>
+            {
+                Config.GlobalUseChatSoundEffect = false;
+            },
+            delay * delayTicks++
+        );
 
-        DalamudApi.Framework.RunOnTick(() =>
-        {
-            Config.PayloadOptions = PayloadOptions.CopyToClipboard;
-            FateManager.DisplayFatePop(realfate);
-        }, delay * delayTicks++);
+        DalamudApi.Framework.RunOnTick(
+            () =>
+            {
+                Config.PayloadOptions = PayloadOptions.CopyToClipboard;
+                FateManager.DisplayFatePop(realfate);
+            },
+            delay * delayTicks++
+        );
 
-        DalamudApi.Framework.RunOnTick(() =>
-        {
-            Config.PayloadOptions = PayloadOptions.ShoutToChat;
-            FateManager.DisplayFatePop(realfate);
-        }, delay * delayTicks++);
+        DalamudApi.Framework.RunOnTick(
+            () =>
+            {
+                Config.PayloadOptions = PayloadOptions.ShoutToChat;
+                FateManager.DisplayFatePop(realfate);
+            },
+            delay * delayTicks++
+        );
 
-        DalamudApi.Framework.RunOnTick(() =>
-        {
-            Config.DisplayBunnyFates = showBunnyFate;
-            Config.GlobalUseChatSoundEffect = useGlobalChat;
-            Config.PayloadOptions = payload;
-        }, delay * delayTicks++);
+        DalamudApi.Framework.RunOnTick(
+            () =>
+            {
+                Config.DisplayBunnyFates = showBunnyFate;
+                Config.GlobalUseChatSoundEffect = useGlobalChat;
+                Config.PayloadOptions = payload;
+            },
+            delay * delayTicks++
+        );
 
         // TODO: add some additional test cases to generate alarms
     }
@@ -147,7 +205,12 @@ public class EurekaHelper : IDalamudPlugin
 
         var cassieTime1 = cassieWeatherTimes[0];
         var cassieTime2 = cassieWeatherTimes[1];
-        var cassieBuiltString = Utils.ArisuStringbuilder("Cassie", "Blizzards", cassieTime1, cassieTime2);
+        var cassieBuiltString = Utils.ArisuStringbuilder(
+            "Cassie",
+            "Blizzards",
+            cassieTime1,
+            cassieTime2
+        );
         PrintMessage(cassieBuiltString.BuiltString);
         DalamudApi.Log.Information(cassieBuiltString.ToString());
 
@@ -157,7 +220,12 @@ public class EurekaHelper : IDalamudPlugin
 
         var skollTime1 = skollWeatherTimes[0];
         var skollTime2 = skollWeatherTimes[1];
-        var skollBuildString = Utils.ArisuStringbuilder("Skoll", "Blizzards", skollTime1, skollTime2);
+        var skollBuildString = Utils.ArisuStringbuilder(
+            "Skoll",
+            "Blizzards",
+            skollTime1,
+            skollTime2
+        );
         PrintMessage(skollBuildString.BuiltString);
         DalamudApi.Log.Information(skollBuildString.ToString());
 
@@ -172,21 +240,28 @@ public class EurekaHelper : IDalamudPlugin
         if (CurrentDatacenterId == 0)
         {
             PrintMessage(
-                "This datacenter is not supported currently. Please submit an issue if you think this is incorrect.");
+                "This datacenter is not supported currently. Please submit an issue if you think this is incorrect."
+            );
             await connectionManager.Close();
             return;
         }
 
-        await connectionManager.Send(JArray
-            .Parse(@$"[ ""1"", ""1"", ""datacenter:{CurrentDatacenterId}"", ""phx_join"", {{}} ]").ToString());
+        await connectionManager.Send(
+            JArray
+                .Parse(
+                    @$"[ ""1"", ""1"", ""datacenter:{CurrentDatacenterId}"", ""phx_join"", {{}} ]"
+                )
+                .ToString()
+        );
         Thread.Sleep(500);
 
         var trackerList = connectionManager.GetCurrentTrackers();
         await connectionManager.Close();
 
         var filteredList = trackerList.Where(x =>
-            (int)x["relationships"]["zone"]["data"]["id"] ==
-            Utils.GetIndexOfZone(DalamudApi.ClientState.TerritoryType));
+            (int)x["relationships"]["zone"]["data"]["id"]
+            == Utils.GetIndexOfZone(DalamudApi.ClientState.TerritoryType)
+        );
         if (!filteredList.Any())
         {
             PrintMessage("Unable to find any public trackers.");
@@ -216,12 +291,11 @@ public class EurekaHelper : IDalamudPlugin
 #if DEBUG
     [Command("/edebug")]
     [DoNotShowInHelp]
-    private void Debug(string command, string argument)
-    {
-    }
+    private void Debug(string command, string argument) { }
 #endif
 
     private void DrawUI() => WindowSystem.Draw();
+
     private void DrawConfigUI() => PluginWindow.IsOpen ^= true;
 
     public static void PrintMessage(SeString message)
@@ -232,11 +306,9 @@ public class EurekaHelper : IDalamudPlugin
             .AddUiForegroundOff()
             .Append(message);
 
-        DalamudApi.ChatGui.Print(new XivChatEntry()
-        {
-            Type = Config.ChatChannel,
-            Message = sb.BuiltString
-        });
+        DalamudApi.ChatGui.Print(
+            new XivChatEntry() { Type = Config.ChatChannel, Message = sb.BuiltString }
+        );
     }
 
     private void OnLogin()
@@ -246,9 +318,11 @@ public class EurekaHelper : IDalamudPlugin
 
     private void UpdateDatacenterId()
     {
-        if (DalamudApi.ObjectTable.LocalPlayer is null || !DalamudApi.ClientState.IsLoggedIn) return;
-        CurrentDatacenterId = Utils.DatacenterToEurekaDatacenterId(DalamudApi.ObjectTable.LocalPlayer.CurrentWorld.Value
-            .DataCenter.Value.Name.ExtractText());
+        if (DalamudApi.ObjectTable.LocalPlayer is null || !DalamudApi.ClientState.IsLoggedIn)
+            return;
+        CurrentDatacenterId = Utils.DatacenterToEurekaDatacenterId(
+            DalamudApi.ObjectTable.LocalPlayer.CurrentWorld.Value.DataCenter.Value.Name.ExtractText()
+        );
     }
 
     public void Dispose()

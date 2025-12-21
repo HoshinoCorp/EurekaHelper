@@ -1,7 +1,7 @@
-﻿using System.Numerics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace EurekaHelper.XIV
 {
@@ -28,7 +28,26 @@ namespace EurekaHelper.XIV
         public bool IsBunnyFate { get; private set; }
         public int FateLevel { get; private set; }
 
-        public EurekaFate(ushort fateId, ushort? trackerId, ushort territoryId, ushort mapId, string fateName, string bossName, string bossShortName, Vector2 fatePosition, string spawnedBy, Vector2 spawnedByPosition, EurekaWeather spawnRequiredWeather, EurekaWeather spawnByRequiredWeather, EurekaElement bossElement, EurekaElement spawnByElement, bool spawnByRequiredNight, int fateLevel, bool includeInTracker = true, bool isBunnyFate = false)
+        public EurekaFate(
+            ushort fateId,
+            ushort? trackerId,
+            ushort territoryId,
+            ushort mapId,
+            string fateName,
+            string bossName,
+            string bossShortName,
+            Vector2 fatePosition,
+            string spawnedBy,
+            Vector2 spawnedByPosition,
+            EurekaWeather spawnRequiredWeather,
+            EurekaWeather spawnByRequiredWeather,
+            EurekaElement bossElement,
+            EurekaElement spawnByElement,
+            bool spawnByRequiredNight,
+            int fateLevel,
+            bool includeInTracker = true,
+            bool isBunnyFate = false
+        )
         {
             FateId = fateId;
             TrackerId = trackerId;
@@ -51,10 +70,11 @@ namespace EurekaHelper.XIV
             FateLevel = fateLevel;
         }
 
-        public bool IsPopped() => KilledAt != -1 && (KilledAt + 7200000) > DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        public bool IsPopped() =>
+            KilledAt != -1 && (KilledAt + 7200000) > DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
         public bool IsRespawnTimeWithinRange(TimeSpan timespan) => GetRespawnTimeleft() <= timespan;
-        
+
         // Are as follow:
         // 1. Check if is popped, display time remaining
         // 2. Else, check if spawn mob requires weather
@@ -70,19 +90,32 @@ namespace EurekaHelper.XIV
                 respawnRequirements.Add(("Respawn", GetRespawnTimeleft()));
             }
 
-            if (SpawnByRequiredWeather != EurekaWeather.None && SpawnByRequiredWeather != tracker.GetCurrentWeatherInfo().Weather)
+            if (
+                SpawnByRequiredWeather != EurekaWeather.None
+                && SpawnByRequiredWeather != tracker.GetCurrentWeatherInfo().Weather
+            )
             {
-                var (weather, time) = tracker.GetAllNextWeatherTime().Single(x => x.Weather == SpawnByRequiredWeather);
+                var (weather, time) = tracker
+                    .GetAllNextWeatherTime()
+                    .Single(x => x.Weather == SpawnByRequiredWeather);
                 respawnRequirements.Add((weather.ToFriendlyString(), time));
-
             }
-            else if (SpawnRequiredWeather != EurekaWeather.None && SpawnRequiredWeather != tracker.GetCurrentWeatherInfo().Weather)
+            else if (
+                SpawnRequiredWeather != EurekaWeather.None
+                && SpawnRequiredWeather != tracker.GetCurrentWeatherInfo().Weather
+            )
             {
-                var (weather, time) = tracker.GetAllNextWeatherTime().Single(x => x.Weather == SpawnRequiredWeather);
+                var (weather, time) = tracker
+                    .GetAllNextWeatherTime()
+                    .Single(x => x.Weather == SpawnRequiredWeather);
                 respawnRequirements.Add((weather.ToFriendlyString(), time));
             }
 
-            if (SpawnByRequiredNight && EorzeaTime.Now.EorzeaDateTime.Hour >= 6 && EorzeaTime.Now.EorzeaDateTime.Hour < 19)
+            if (
+                SpawnByRequiredNight
+                && EorzeaTime.Now.EorzeaDateTime.Hour >= 6
+                && EorzeaTime.Now.EorzeaDateTime.Hour < 19
+            )
                 respawnRequirements.Add(("Night", EorzeaTime.Now.TimeUntilNight()));
 
             return respawnRequirements;
@@ -90,7 +123,10 @@ namespace EurekaHelper.XIV
 
         public DateTime GetPoppedTime() => EorzeaTime.Zero.AddMilliseconds(KilledAt).ToLocalTime();
 
-        public TimeSpan GetRespawnTimeleft() => TimeSpan.FromMilliseconds(KilledAt + 7200000 - DateTimeOffset.Now.ToUnixTimeMilliseconds());
+        public TimeSpan GetRespawnTimeleft() =>
+            TimeSpan.FromMilliseconds(
+                KilledAt + 7200000 - DateTimeOffset.Now.ToUnixTimeMilliseconds()
+            );
 
         public void ResetKill() => KilledAt = -1;
 

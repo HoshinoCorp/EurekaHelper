@@ -25,11 +25,12 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(24051),
         };
 
-        private static readonly List<CompletionRequirement> ElementalPlusOneRelicCompletionRequirements = new()
-        {
-            new CompletionRequirement(24124, 150),
-            new CompletionRequirement(0, 10, "Logos Actions Unlocked")
-        };
+        private static readonly List<CompletionRequirement> ElementalPlusOneRelicCompletionRequirements =
+            new()
+            {
+                new CompletionRequirement(24124, 150),
+                new CompletionRequirement(0, 10, "Logos Actions Unlocked"),
+            };
         #endregion
 
         #region Elemental +2 Weapon
@@ -53,11 +54,12 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(24067),
         };
 
-        private static readonly List<CompletionRequirement> ElementalPlusTwoRelicCompletionRequirements = new()
-        {
-            new CompletionRequirement(24124, 200),
-            new CompletionRequirement(0, 20, "Logos Actions Unlocked")
-        };
+        private static readonly List<CompletionRequirement> ElementalPlusTwoRelicCompletionRequirements =
+            new()
+            {
+                new CompletionRequirement(24124, 200),
+                new CompletionRequirement(0, 20, "Logos Actions Unlocked"),
+            };
         #endregion
 
         #region Pyros Weapon
@@ -81,12 +83,13 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(24083),
         };
 
-        private static readonly List<CompletionRequirement> PyrosWeaponRelicCompletionRequirements = new()
-        {
-            new CompletionRequirement(24124, 300),
-            new CompletionRequirement(24123, 5),
-            new CompletionRequirement(0, 30, "Logos Actions Unlocked")
-        };
+        private static readonly List<CompletionRequirement> PyrosWeaponRelicCompletionRequirements =
+            new()
+            {
+                new CompletionRequirement(24124, 300),
+                new CompletionRequirement(24123, 5),
+                new CompletionRequirement(0, 30, "Logos Actions Unlocked"),
+            };
         #endregion
 
         #region Elemental Armor
@@ -129,19 +132,32 @@ namespace EurekaHelper.XIV.Relic
             new RelicItem(24116),
         };
 
-        private static readonly List<CompletionRequirement> ElementalArmorRelicCompletionRequirements = new()
-        {
-            new CompletionRequirement(24124, 40),
-            new CompletionRequirement(0, 50, "Logos Actions Unlocked")
-        };
+        private static readonly List<CompletionRequirement> ElementalArmorRelicCompletionRequirements =
+            new()
+            {
+                new CompletionRequirement(24124, 40),
+                new CompletionRequirement(0, 50, "Logos Actions Unlocked"),
+            };
         #endregion
 
         public static readonly Dictionary<string, EurekaRelic> PyrosRelicStages = new()
         {
-            ["Elemental +1"] = new EurekaRelic(ElementalPlusOneRelic, ElementalPlusOneRelicCompletionRequirements),
-            ["Elemental +2"] = new EurekaRelic(ElementalPlusTwoRelic, ElementalPlusTwoRelicCompletionRequirements),
-            ["Pyros Weapon"] = new EurekaRelic(PyrosWeaponRelic, PyrosWeaponRelicCompletionRequirements),
-            ["Elemental Armor"] = new EurekaRelic(ElementalArmorRelic, ElementalArmorRelicCompletionRequirements),
+            ["Elemental +1"] = new EurekaRelic(
+                ElementalPlusOneRelic,
+                ElementalPlusOneRelicCompletionRequirements
+            ),
+            ["Elemental +2"] = new EurekaRelic(
+                ElementalPlusTwoRelic,
+                ElementalPlusTwoRelicCompletionRequirements
+            ),
+            ["Pyros Weapon"] = new EurekaRelic(
+                PyrosWeaponRelic,
+                PyrosWeaponRelicCompletionRequirements
+            ),
+            ["Elemental Armor"] = new EurekaRelic(
+                ElementalArmorRelic,
+                ElementalArmorRelicCompletionRequirements
+            ),
         };
     }
 }

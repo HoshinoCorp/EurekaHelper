@@ -20,9 +20,9 @@ public enum BaseSoundEffect
     SoundEffect49 = 0x31,
     SoundEffect50 = 0x32,
     SoundEffect51 = 0x33,
-    SoundEffect52 = 0x34
+    SoundEffect52 = 0x34,
 }
-    
+
 public enum ChatSoundEffect
 {
     ChatSoundEffect1 = 1,
